@@ -1,0 +1,237 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+  document.getElementById("translator").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+  document.getElementById("translator").style.marginLeft= "113px";
+}
+</script>
+
+<html>
+  <head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bayon">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta">
+	<navbar>
+	<div id="main">
+	<button class="openbtn" onclick="openNav()">
+	<a style="font-family: Bayon; color: #FFFFFF">☰</a></button>  
+	</div>
+	<divMain>
+	<ul class="list">
+		<li class="list-item"><a href="Home" class ="list-link">
+		<img id = "Home" title = "Home" style="width:1.6em; height:1.6em;" src="/images/Home.png" onmouseover="homeOver()" onmouseout="homeOut()"/></a></li>
+		
+		<li class="list-item"><a href="Learn" class ="list-link">
+		<img id = "Learn" title = "Learn" style="width:1.6em; height:1.6em;" src="/images/Learn.png" onmouseover="learnOver()" onmouseout="learnOut()"/></a></li>
+		
+		<li class="list-item"><a href="How_To_Use" class ="list-link">
+		<img id = "How_To_Use" title = "How To Use" style="width:1.6em; height:1.6em;" src="/images/How_To_Use.png" onmouseover="howtouseOver()" onmouseout="howtouseOut()"/></a></li>
+		
+		<li class="list-item"><a class ="list-link1">
+		<img id = "About_Us" title = "About Us" style="width:1.6em; height:1.6em;" src="/images/About_Us_Selected.png"/></a></li>
+		
+
+		</ul>
+	</divMain>
+	</navbar>
+    <title> Transpose | English Sentence to Math Expression Translator </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+  </head>
+  <br><br><br>
+  
+  <div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
+  </div>
+
+  <body>
+    <div class="container" style="float: right; width: 80%;">
+      <main>
+       
+      </main>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2022-2023 JMDB & RL-IT</p>
+        <h6 class="text-info">Prototype phase</h6>
+      </footer>
+    </div>
+
+    <script>
+      $SCRIPT_ROOT = {{ request.script_root|tojson }};
+    </script>
+
+    <script 
+      src="https://code.jquery.com/jquery-3.6.1.min.js" 
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+      crossorigin="anonymous">
+    </script>
+
+    <script type="text/javascript">
+      $(document).on('submit','#sentence_form',function(e){
+        e.preventDefault();
+        $.ajax({
+          type:'POST',
+          url: $SCRIPT_ROOT + '/_submit_sentence',
+          data:{
+            sentence:$("#sentence").val()
+          },
+          success:function(response){
+            $("#output").html(response)
+          }
+        })
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+navbar {
+	height: 8%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items:center;
+	padding-top: 1%;
+	position: static;
+	border-bottom-style: solid;
+	background-color: #202124;
+	border-color: #FFFFFF;
+	border-bottom-width: 2px;
+}
+
+.list {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	list-style: none;
+}
+
+.list .list-link {
+	position: relative;
+	color: #FFFFFF;
+	text-decoration: none;
+	padding: 9px;
+	font-size: 20px;
+	padding-bottom:11px;
+}
+
+.list .list-link1 {
+	position: relative;
+	text-decoration: none;
+	padding: 9px;
+	font-size: 20px;
+	border-bottom-style: solid;
+	border-color: #8AB4EA;
+	border-bottom-width: 4px;
+	padding-bottom:15px;
+}
+
+.list .list-link::after {
+	content: '';
+	position: absolute;
+	top:108%;
+	bottom: 0;
+	left: 50%;
+	width: 0%;
+	height: 4px;
+	background: #8AB4EA;
+	transition: 0.4s ease-out;
+}
+
+.list .list-link:hover::after {
+	left: 0;
+	width: 100%;
+}
+
+body {
+background-color: #202124;
+}
+
+li{
+	color: #03122E;
+	font-size: 1.5em;
+	font-family: Mukta;
+	padding-top:10px;
+}
+
+
+h5{
+	font-family: Mukta;
+	font-size: 1.1em;
+	text-align: center;
+}
+
+divMain{
+    width:100%;
+	float:right;
+}
+	
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 10px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 2em;
+  cursor: pointer;
+  background-color: #20212400;
+  color: white;
+  border: none;
+  padding-bottom: 0px;
+  overflow:hidden;
+}
+
+
+#main {
+  transition: margin-left .5s;
+  padding-right:2%;
+  float:left;
+  display:block;
+  overflow:hidden;
+}
+
+#translator {
+  transition: margin-left .5s;
+}
+</style>

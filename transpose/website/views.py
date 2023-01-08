@@ -15,17 +15,34 @@ views = Blueprint('views', __name__)
 @views.route('/')
 def index():
 	example_sent = example_list[random.randint(0, len(example_list) - 1)]
-	return render_template('index.html', translation="", example_sent = example_sent, last_input = example_sent)
+	return render_template('home.html', translation="", example_sent = example_sent, last_input = example_sent)
+
+@views.route('/Home')
+def home():
+	example_sent = example_list[random.randint(0, len(example_list) - 1)]
+	return render_template('home.html', translation="", example_sent = example_sent, last_input = example_sent)
+
+@views.route('/Learn')
+def learn():
+	return render_template('learn.html')
+    
+@views.route('/How_To_Use')
+def how_to_use():
+	return render_template('how_to_use.html')
+    
+@views.route('/About_Us')
+def about_us():
+	return render_template('about_us.html')
 
 @views.route('/_submit_sentence', methods=['POST'])
 def submit_sentence():
 	sentence = request.form.get('sentence')
 	lis = translation(sentence)
 	try: 
-		lis = prettier(lis)
+		lis = "<h5><b>Output:</b><br><br>" + (prettier(lis))
 	except:
 		if type(lis) is list and all(lis):
-			temp = "<h5>Ambiguous Sentence</h5><br>"
+			temp = "<h5><b>Output:</b> <br><br> Ambiguous Sentence</h5>"
 			temp += "<br>".join([prettier(i) for i in lis])
 			lis = temp
 	return lis
