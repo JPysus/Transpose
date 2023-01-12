@@ -374,7 +374,7 @@ def _postprocessing(sentence_list):
     for i in range(len(sentence_list)):
         sentence_list[i] = _parenthesis_adder(sentence_list[i])
         sentence_list[i] = (' '.join(_flatten(sentence_list[i])))
-    return _semi_flattener(sentence_list)
+    return (sentence_list)
 
 
 def _semi_flattener(tree_list):

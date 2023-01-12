@@ -37,10 +37,13 @@ def about_us():
 def submit_sentence():
 	sentence = request.form.get('sentence')
 	lis = translate(sentence)
-	if type(lis) is list and all(lis):
-		temp = "<h5><b>Output:</b>"
+	print(lis)
+	if lis == None:
+		lis = "No Translation: Input Unrecognized"
+	elif type(lis) is list:
+		temp = "<h5><b>Output:</b></h5>"
 		if len(lis) > 1:
-		    temp += "<br><br> Ambiguous Sentence</h5>"
+		    temp += "<h5>Ambiguous Sentence</h5>"
 		temp += "<br>".join([prettier(i) for i in lis])
 		lis = temp
 	return lis
