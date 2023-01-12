@@ -424,8 +424,6 @@ def translate(sentence):
 #optional function
 def prettier(trans):
 #making output more readable
-#only use on one list, 
-#if the translation is ambiguous, use this iteratively
 
     txt = trans
     txt = txt.replace("( ", "(")
