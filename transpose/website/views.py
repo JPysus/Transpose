@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request
-from .translator import translation
-from .translator import prettier
+from .translator import translate, prettier
 import random
 
 example_list = [
@@ -37,12 +36,11 @@ def about_us():
 @views.route('/_submit_sentence', methods=['POST'])
 def submit_sentence():
 	sentence = request.form.get('sentence')
-	lis = translation(sentence)
-	try: 
-		lis = "<h5><b>Output:</b><br><br>" + (prettier(lis))
-	except:
-		if type(lis) is list and all(lis):
-			temp = "<h5><b>Output:</b> <br><br> Ambiguous Sentence</h5>"
-			temp += "<br>".join([prettier(i) for i in lis])
-			lis = temp
+	lis = translate(sentence)
+	if type(lis) is list and all(lis):
+		temp = "<h5><b>Output:</b>"
+		if len(lis) > 1:
+		    temp += "<br><br> Ambiguous Sentence</h5>"
+		temp += "<br>".join([prettier(i) for i in lis])
+		lis = temp
 	return lis
