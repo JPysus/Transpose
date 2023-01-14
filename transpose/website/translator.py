@@ -20,7 +20,10 @@ E -> S
 S -> 'square' S | 'square' NV
 S -> O | L | '-' O | '-' L
 L -> 'sum' LEADING | 'difference' LEADING | 'product' LEADING | 'quotient' LEADING
-LEADING -> NV ',' LEADING | S ',' LEADING | NV 'and' NV | NV 'and' S | S 'and' NV | S 'and' S | 'and' NV | 'and' S
+L -> 'divide' NV NV | 'more' NV NV
+LEADING -> NV ',' LEADING | S ',' LEADING 
+LEADING -> NV 'and' NV | NV 'and' S | S 'and' NV | S 'and' S
+LEADING -> 'and' NV | 'and' S
 NV -> '#VAR#' | '#NUM#'
 O -> NV EXACT NV | NV REVERSE NV | S EXACT S | S REVERSE S 
 O -> S ',' EXACT S | S ',' REVERSE S | S ',' EXACT NV | S ',' REVERSE NV 
@@ -172,6 +175,14 @@ def _name_conversion(sentence):
                 temp.append("and")
             else:
                 None
+
+        # e.g. "one plus two is six" -> "one plus two is equal to"
+        elif pos[i][0] == "be":
+            if i > 1 and i != len(pos) and pos[i-1][1] in ('CD') and (pos[i+1][1] in ('CD') or pos[i+1][0] in keyword):
+                temp.append("=")
+            else:
+                None
+
         # e.g. "negative" -> "-"
         elif pos[i][0] == "negative":
             if i != len(pos) - 1 and (match(r"^-?\d+$",pos[i+1][0]) or pos[i+1][0] in variable):
@@ -197,12 +208,8 @@ def _name_conversion(sentence):
         elif pos[i][1] in ('CD') or match(r"^-?\d+$",pos[i][0]) or pos[i][0] in keyword+['and', ','] or pos[i][0] in variable:
             temp_word = pos[i][0]
             temp_pos = pos[i][1]
-            if i != len(pos) - 1 and pos[i][1] in ('CD') and (pos[i+1][0] in variable or pos[i+1][0] not in keyword+['and', ',']):
-                if temp_word not in ('≥', '<', '≠', '=', '≤', '>'):
-                    temp_word += pos[i+1][0]
-                    i += 1
             # if word is 2x, 2y, 4z, etc....
-            if match("^[0-9]+[a-z]$", temp_pos):
+            if match("^[0-9]+[a-z]$", temp_word):
                 temp.append(search("[0-9]+", temp_word).group())
                 temp.append("times")
                 v = search("[a-z]", temp_word).group()
@@ -210,7 +217,8 @@ def _name_conversion(sentence):
                 variable.append(v)
                 temp.append(v)
                 temp.append(',')
-            temp.append(temp_word)
+            else:
+                temp.append(temp_word)
         # if it gets here
         # it means word is unknown, 
         # and will be turned into a variable
@@ -227,6 +235,8 @@ lead_op_sign = {
     'difference': '-',
     'product': '*',
     'quotient': '/',
+    'more': '+',
+    'divide': '/',
 }
 def _word_math_tree_to_list(tree, lead_op = None):
     output = []
@@ -257,12 +267,15 @@ def _word_math_tree_to_list(tree, lead_op = None):
     
     #combines all words from L to LEADING SEQUENCE, 
     elif tree.label() in ('L'):
-        temp = _word_math_tree_to_list(tree[1], lead_op = tree[0])
+        if tree[1].label() in ('NV'):
+            temp = _word_math_tree_to_list(tree[1], lead_op = tree[0])
+            temp += _word_math_tree_to_list(tree[2], lead_op = tree[0])
+        else:
+            temp = _word_math_tree_to_list(tree[1], lead_op = tree[0])
         
         #small code to put OPERATOR word between VAR/NUM, in a LEADING sequence
         result = [lead_op_sign[tree[0]]] * (len(temp) * 2 - 1)
         result[0::2] = temp
-            
         return result
     
     #gets all LEADING words
@@ -328,10 +341,10 @@ def _tree_conversion(token):
     #3. tree conversion
         # for recognizing constants and variables
         # recreates the original sentence with #VAR# #NUM# replacements
-    mod_token = ['#NUM#' if match(r"^-?\d+$", i) else i for i in token]
-    mod_token = ['#VAR#' if match(r"^-?[0-9]*[a-z]$", i) else i for i in mod_token]
-    numbers = [i for i in token if match(r"^-?[0-9]*\d+$", i)]
-    var = [i for i in token if match(r"^-?[0-9]*[a-z]$", i)]
+    mod_token = ['#NUM#' if match(r"^-?[0-9]+$", i) else i for i in token]
+    mod_token = ['#VAR#' if match(r"^-?[a-z]$", i) else i for i in mod_token]
+    numbers = [i for i in token if match(r"^-?[0-9]+$", i)]
+    var = [i for i in token if match(r"^-?[a-z]$", i)]
 
         #converting the token to TREE object
     trees = []
@@ -375,7 +388,6 @@ def _postprocessing(sentence_list):
         sentence_list[i] = _parenthesis_adder(sentence_list[i])
         sentence_list[i] = (' '.join(_flatten(sentence_list[i])))
     return (sentence_list)
-
 
 def _semi_flattener(tree_list):
     # list flattener specifically for tree_list
