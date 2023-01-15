@@ -1,3 +1,5 @@
+#Author - John Michael De Borja (JPysus)
+#johnmichaeldb@gmail.com
 from nltk import CFG
 from nltk import Tree
 from nltk.stem import WordNetLemmatizer
@@ -12,22 +14,24 @@ from text2digits import text2digits
 t2d = text2digits.Text2Digits()
 math_word_grammar = CFG.fromstring("""
 
-E -> S '≠' S | S '=' S | S '<' S | S '>' S | S '≤' S | S '≥' S
-E -> S '≠' NV | S '=' NV | S '<' NV | S '>' NV | S '≤' NV | S '≥' NV
-E -> NV '≠' S | NV '=' S | NV '<' S | NV '>' S | NV '≤' S | NV '≥' S
-E -> NV '≠' NV | NV '=' NV | NV '<' NV | NV '>' NV | NV '≤' NV | NV '≥' NV
+E -> S MID_OP S | S MID_OP NV | NV MID_OP S | NV MID_OP NV
 E -> S
 S -> 'square' S | 'square' NV
 S -> O | L | '-' O | '-' L
 L -> 'sum' LEADING | 'difference' LEADING | 'product' LEADING | 'quotient' LEADING
-L -> 'divide' NV NV | 'more' NV NV
+L -> EXACT NV NV | EXACT S S | EXACT S NV | EXACT NV S
 LEADING -> NV ',' LEADING | S ',' LEADING 
 LEADING -> NV 'and' NV | NV 'and' S | S 'and' NV | S 'and' S
 LEADING -> 'and' NV | 'and' S
+O -> NV MID_WORD NV | S MID_WORD S
+O -> S ',' MID_WORD S | S ',' MID_WORD ',' S | S MID_WORD ',' S
+O -> S ',' MID_WORD NV | NV MID_WORD ',' S
+O -> S MID_WORD NV | NV MID_WORD S 
+
+MID_WORD -> EXACT | REVERSE
 NV -> '#VAR#' | '#NUM#'
-O -> NV EXACT NV | NV REVERSE NV | S EXACT S | S REVERSE S 
-O -> S ',' EXACT S | S ',' REVERSE S | S ',' EXACT NV | S ',' REVERSE NV 
-O -> NV EXACT S | NV REVERSE S
+LEAD_WORD -> 'sum' | 'difference' | 'product' | 'quotient'
+MID_OP -> '≠' | '=' | '≤' | '<' | '≥' | '>'
 EXACT -> 'more' | 'less' | 'times' | 'divide'
 REVERSE -> 'more_than' | 'less_than'
 
@@ -73,8 +77,8 @@ operator = {
         'square':['square'],
     },
     'MULTIPLIER':{
-        '2 times': ['twice'],
-        '3 times': ['thrice'],
+        'times 2': ['twice'],
+        'times 3': ['thrice'],
     },
 }
 operator_sign = {
@@ -86,7 +90,7 @@ operator_sign = {
 keyword = [word for i in operator.keys() for j in operator[i].keys() for word in operator[i][j]]
 keyword = list(set(keyword+[j for i in operator.keys() for j in operator[i].keys()]))
 keyword.sort(key=len, reverse=True)
-stopword = ["an", "by", "the", "of", "from", "certain", 'as', 'another']
+stopword = ["an", "by", "the", "of", "from", "certain", 'as', 'another', 'when']
     #filter LEADING keywords out
 modified_keyword = list(set(keyword) - set([word for i in operator["LEADING"].keys() for word in operator["LEADING"][i]]))
 
@@ -236,85 +240,109 @@ lead_op_sign = {
     'product': '*',
     'quotient': '/',
     'more': '+',
+    'less': '-',
+    'times': '*',
     'divide': '/',
 }
 def _word_math_tree_to_list(tree, lead_op = None):
-    output = []
     #encloses all starts
-    if isinstance(tree, str) and tree == "square":
-        output.append(tree)
+    output = []
 
-    elif tree.label() in ('NV'):
-        output.append(tree.leaves()[0])
-
-    elif tree.label() in ('E'):
+    #for E grammar
+    if tree.label() in ('E'):
         for i in tree:
+            if i.label() in ('S'):
+                output.append(_word_math_tree_to_list(i))
+
+            elif i.label() in ('MID_OP', 'NV'):
+                output.append(i[0])
+
+    #for S grammar
+    elif tree.label() in ('S'):
+        #for multiple variations of S tree
+        for i in tree:
+            #for 'square' and '-'
             if isinstance(i, str):
                 output.append(i)
-            else:
-                in_list = []
-                in_list.append(_word_math_tree_to_list(i))
-                output.append(in_list)
 
-    elif tree.label() in ('S'):
-        for i in tree:
-            if isinstance(i, str) and i == '-':
-                output.append(i)
-            else:
+            elif i.label() in ('NV'):
+                output.append(i[0])
+
+            elif i.label() in ('S'):
+                output.append(_word_math_tree_to_list(i))
+
+            elif i.label() in ('O', 'L'):
                 in_list = []
                 in_list.append(_word_math_tree_to_list(i))
                 output.append(in_list)
     
-    #combines all words from L to LEADING SEQUENCE, 
+    #for L grammar
     elif tree.label() in ('L'):
-        if tree[1].label() in ('NV'):
-            temp = _word_math_tree_to_list(tree[1], lead_op = tree[0])
-            temp += _word_math_tree_to_list(tree[2], lead_op = tree[0])
-        else:
-            temp = _word_math_tree_to_list(tree[1], lead_op = tree[0])
+        temp = []       #collects NV, S output
+        temp_op = ""    #temp_op is operator for lead_op param.
+
+        #for variations of L grammar
+        for i in tree:
+            if isinstance(i, str) and i in lead_op_sign.keys():
+                temp_op = i
+
+            elif i.label() in ('EXACT'):
+                temp_op = i[0]
+
+            elif i.label() in ('NV'):
+                temp.append(i[0])
+
+            elif i.label() in ('S'):
+                temp.append(_word_math_tree_to_list(i))
+
+            elif i.label() in ('LEADING'):
+                temp = _word_math_tree_to_list(i, lead_op = temp_op)
         
-        #small code to put OPERATOR word between VAR/NUM, in a LEADING sequence
-        result = [lead_op_sign[tree[0]]] * (len(temp) * 2 - 1)
+        #temp_op => operator
+        #code to turn [x, y] => [x, temp_op, y]
+        #transforming LEADING sequence into EXACT
+        result = [lead_op_sign[temp_op]] * (len(temp) * 2 - 1)
         result[0::2] = temp
         return result
     
-    #gets all LEADING words
+    #for LEADING grammar
     elif tree.label() in ('LEADING'):
         for i in tree:
-            if type(i) is str:
+            #for ',' and 'and', skip these
+            if isinstance(i, str):
                 continue
-                
+
             elif i.label() in ('NV'):
-                output.append(i.leaves()[0])
-                
-            #recursion, traverses S 
-            #goes back to L
-            elif i.label() in ('S'):
-                output.append(_word_math_tree_to_list(i, lead_op))
-            
-            #recursion, traverses LEADING 
-            #goes back to L
+                output.append(i[0])
+
+            #for LEADING again
             elif i.label() in ('LEADING'):
                 temp = _word_math_tree_to_list(i, lead_op)
                 for x in temp:
                     output.append(x)
+            
+            elif i.label() in ('S'):
+                output.append(_word_math_tree_to_list(i))
     
-    #for add minus etc...
+    #for O grammar, add minus etc...
     elif tree.label() in ('O'):
         in_list = []
         for i in tree:
-            if type(i) is str:
+            #for ',' skip this
+            if isinstance(i, str):
                 continue
             
-            #recursion, gets all NUM VAR add minus etc... from O
-            #goes back to S
-            elif i.label() in ('NV', 'EXACT', 'REVERSE'):
-                in_list.append(i.leaves()[0])
-                
-            #recursion, traverses S 
-            #goes back to S
+            elif i.label() in ('NV'):
+                in_list.append(i[0])
+
             elif i.label() in ('S'):
                 in_list.append(_word_math_tree_to_list(i))
+
+            #for MID_WORD -> EXACT | REVERSE
+            #from O grammar, then i[0][0]
+            elif i.label() in ('MID_WORD'):
+                in_list.append(i[0][0])
+
         output.append(in_list)
     return output
 
