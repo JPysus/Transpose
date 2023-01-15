@@ -15,9 +15,9 @@ t2d = text2digits.Text2Digits()
 math_word_grammar = CFG.fromstring("""
 
 E -> S MID_OP S | S MID_OP NV | NV MID_OP S | NV MID_OP NV
-E -> S
-S -> 'square' S | 'square' NV
-S -> O | L | '-' O | '-' L
+E -> S | NV
+S -> O | L 
+L -> MULTIPLIER L
 L -> 'sum' LEADING | 'difference' LEADING | 'product' LEADING | 'quotient' LEADING
 L -> EXACT NV NV | EXACT S S | EXACT S NV | EXACT NV S
 LEADING -> NV ',' LEADING | S ',' LEADING 
@@ -28,8 +28,9 @@ O -> S ',' MID_WORD S | S ',' MID_WORD ',' S | S MID_WORD ',' S
 O -> S ',' MID_WORD NV | NV MID_WORD ',' S
 O -> S MID_WORD NV | NV MID_WORD S 
 
+NV -> '#VAR#' | '#NUM#' | MULTIPLIER NV
+MULTIPLIER -> 'square' | 'twice' | 'thrice' | '-'
 MID_WORD -> EXACT | REVERSE
-NV -> '#VAR#' | '#NUM#'
 LEAD_WORD -> 'sum' | 'difference' | 'product' | 'quotient'
 MID_OP -> '≠' | '=' | '≤' | '<' | '≥' | '>'
 EXACT -> 'more' | 'less' | 'times' | 'divide'
@@ -77,8 +78,8 @@ operator = {
         'square':['square'],
     },
     'MULTIPLIER':{
-        'times 2': ['twice'],
-        'times 3': ['thrice'],
+        'twice': ['twice'],
+        'thrice': ['thrice'],
     },
 }
 operator_sign = {
@@ -251,27 +252,25 @@ def _word_math_tree_to_list(tree, lead_op = None):
     #for E grammar
     if tree.label() in ('E'):
         for i in tree:
-            if i.label() in ('S'):
+            if i.label() in ('S', 'NV'):
                 output.append(_word_math_tree_to_list(i))
 
-            elif i.label() in ('MID_OP', 'NV'):
+            elif i.label() in ('MID_OP'):
                 output.append(i[0])
+    
+    #for NV grammar
+    elif tree.label() in ('NV'):
+        if isinstance(tree[0], str):
+            output.append(tree[0])
 
-    #for S grammar
+        else:
+            output.append(tree[0][0])
+            output.append(_word_math_tree_to_list(tree[1]))
+
+    #for S grammar 
     elif tree.label() in ('S'):
-        #for multiple variations of S tree
         for i in tree:
-            #for 'square' and '-'
-            if isinstance(i, str):
-                output.append(i)
-
-            elif i.label() in ('NV'):
-                output.append(i[0])
-
-            elif i.label() in ('S'):
-                output.append(_word_math_tree_to_list(i))
-
-            elif i.label() in ('O', 'L'):
+            if i.label() in ('O', 'L'):
                 in_list = []
                 in_list.append(_word_math_tree_to_list(i))
                 output.append(in_list)
@@ -289,20 +288,24 @@ def _word_math_tree_to_list(tree, lead_op = None):
             elif i.label() in ('EXACT'):
                 temp_op = i[0]
 
-            elif i.label() in ('NV'):
-                temp.append(i[0])
-
-            elif i.label() in ('S'):
+            elif i.label() in ('S', 'NV', 'L'):
                 temp.append(_word_math_tree_to_list(i))
 
             elif i.label() in ('LEADING'):
                 temp = _word_math_tree_to_list(i, lead_op = temp_op)
+
+            elif i.label() in ('MULTIPLIER'):
+                temp.append(i[0])
         
-        #temp_op => operator
-        #code to turn [x, y] => [x, temp_op, y]
-        #transforming LEADING sequence into EXACT
-        result = [lead_op_sign[temp_op]] * (len(temp) * 2 - 1)
-        result[0::2] = temp
+        if temp_op != "":
+            #temp_op => operator
+            #code to turn [x, y] => [x, temp_op, y]
+            #transforming LEADING sequence into EXACT
+            result = [lead_op_sign[temp_op]] * (len(temp) * 2 - 1)
+            result[0::2] = temp
+        
+        else:
+            result = temp    
         return result
     
     #for LEADING grammar
@@ -312,8 +315,8 @@ def _word_math_tree_to_list(tree, lead_op = None):
             if isinstance(i, str):
                 continue
 
-            elif i.label() in ('NV'):
-                output.append(i[0])
+            elif i.label() in ('S', 'NV'):
+                output.append(_word_math_tree_to_list(i))
 
             #for LEADING again
             elif i.label() in ('LEADING'):
@@ -321,8 +324,6 @@ def _word_math_tree_to_list(tree, lead_op = None):
                 for x in temp:
                     output.append(x)
             
-            elif i.label() in ('S'):
-                output.append(_word_math_tree_to_list(i))
     
     #for O grammar, add minus etc...
     elif tree.label() in ('O'):
@@ -332,10 +333,7 @@ def _word_math_tree_to_list(tree, lead_op = None):
             if isinstance(i, str):
                 continue
             
-            elif i.label() in ('NV'):
-                in_list.append(i[0])
-
-            elif i.label() in ('S'):
+            elif i.label() in ('S', 'NV'):
                 in_list.append(_word_math_tree_to_list(i))
 
             #for MID_WORD -> EXACT | REVERSE
@@ -348,9 +346,17 @@ def _word_math_tree_to_list(tree, lead_op = None):
 
 def _mid_operator_convert(s):
     for i in range(len(s)):
-        if isinstance(s[i], str) and s[i] == "square":
-            s[i] = "^ 2"
-            s[i], s[i+1] = s[i+1], s[i]
+        if isinstance(s[i], str):
+            if s[i] == "square":
+                s[i] = "^ 2"
+                s[i], s[i+1] = s[i+1], s[i]
+
+            elif s[i] == "twice":
+                s[i] = "2 *"
+
+            elif s[i] == "thrice":
+                s[i] = "3 *"
+                
         if type(s[i]) is list:
             s[i] = _mid_operator_convert(s[i])
             continue
