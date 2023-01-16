@@ -181,10 +181,12 @@ def _name_conversion(sentence):
             else:
                 None
 
-        # e.g. "one plus two is six" -> "one plus two is equal to"
+        # e.g. "one plus two is six" -> "one plus two = six"
         elif pos[i][0] == "be":
-            if i > 1 and i != len(pos) and pos[i-1][1] in ('CD') and (pos[i+1][1] in ('CD') or pos[i+1][0] in keyword):
-                temp.append("=")
+            if i > 1 and i != len(pos):
+                if pos[i-1][1] in ('CD') or match(r"^-?\d*[a-z]$",pos[i-1][0]):
+                    if pos[i+1][1] in ('CD') or match(r"^-?\d*[a-z]$", pos[i+1][0]) or pos[i+1][0] in operator['LEADING']:
+                        temp.append("=")
             else:
                 None
 
@@ -356,7 +358,7 @@ def _mid_operator_convert(s):
 
             elif s[i] == "thrice":
                 s[i] = "3 *"
-                
+
         if type(s[i]) is list:
             s[i] = _mid_operator_convert(s[i])
             continue
@@ -420,7 +422,9 @@ def _conversion(sentence):
 def _postprocessing(sentence_list):
     for i in range(len(sentence_list)):
         sentence_list[i] = _parenthesis_adder(sentence_list[i])
-        sentence_list[i] = (' '.join(_flatten(sentence_list[i])))
+        sentence_list[i] = (' '.join(_flatten([sentence_list[i]])))
+        #sentence_list[i] is enclosed in anoter []
+        #for input cases like "one"
     return (sentence_list)
 
 def _semi_flattener(tree_list):
