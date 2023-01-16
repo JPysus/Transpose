@@ -91,7 +91,7 @@ operator_sign = {
 keyword = [word for i in operator.keys() for j in operator[i].keys() for word in operator[i][j]]
 keyword = list(set(keyword+[j for i in operator.keys() for j in operator[i].keys()]))
 keyword.sort(key=len, reverse=True)
-stopword = ["an", "by", "the", "of", "from", "certain", 'as', 'another', 'when']
+stopword = ["an", "by", "the", "of", "from", "certain", 'as', 'another', 'when', "with"]
     #filter LEADING keywords out
 modified_keyword = list(set(keyword) - set([word for i in operator["LEADING"].keys() for word in operator["LEADING"][i]]))
 
@@ -183,9 +183,11 @@ def _name_conversion(sentence):
 
         # e.g. "one plus two is six" -> "one plus two = six"
         elif pos[i][0] == "be":
-            if i > 1 and i != len(pos):
+            if i > 0 and i != len(pos):
                 if pos[i-1][1] in ('CD') or match(r"^-?\d*[a-z]$",pos[i-1][0]):
-                    if pos[i+1][1] in ('CD') or match(r"^-?\d*[a-z]$", pos[i+1][0]) or pos[i+1][0] in operator['LEADING']:
+                    temp_op_keyword = list(operator['LEADING'])
+                    temp_op_keyword += list(operator['MULTIPLIER'])
+                    if pos[i+1][1] in ('CD') or match(r"^-?\d*[a-z]$", pos[i+1][0]) or pos[i+1][0] in temp_op_keyword:
                         temp.append("=")
             else:
                 None
@@ -217,13 +219,20 @@ def _name_conversion(sentence):
             temp_pos = pos[i][1]
             # if word is 2x, 2y, 4z, etc....
             if match("^[0-9]+[a-z]$", temp_word):
+                temp.append("product")
                 temp.append(search("[0-9]+", temp_word).group())
-                temp.append("times")
+                temp.append("and")
                 v = search("[a-z]", temp_word).group()
                 variable.remove(v)
                 variable.append(v)
                 temp.append(v)
-                temp.append(',')
+            
+            #if word is x, y, z, etc...
+            elif temp_word in variable:
+                temp.append(temp_word)
+                variable.remove(temp_word)
+                variable.append(temp_word)
+            
             else:
                 temp.append(temp_word)
         # if it gets here
