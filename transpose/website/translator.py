@@ -60,7 +60,7 @@ operator = {
         'more_than': ['more than', 'greater than'],
     },
     'EQUALITY':{
-        '=': ['equal'], 
+        '=': ['equal', 'yield'], 
     },
     'EXACT':{
         'more': ['plus', 'add', 'increase', 'exceed', 'more'], 
