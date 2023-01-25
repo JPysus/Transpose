@@ -28,7 +28,7 @@ O -> S ',' MID_WORD S | S ',' MID_WORD ',' S | S MID_WORD ',' S
 O -> S ',' MID_WORD NV | NV MID_WORD ',' S
 O -> S MID_WORD NV | NV MID_WORD S 
 
-NV -> '#VAR#' | '#NUM#' | MULTIPLIER NV
+NV -> '#VAR#' | '#NUM#' | MULTIPLIER NV | NV 'square'
 MULTIPLIER -> 'square' | 'twice' | 'thrice' | '-'
 MID_WORD -> EXACT | REVERSE
 LEAD_WORD -> 'sum' | 'difference' | 'product' | 'quotient'
@@ -271,13 +271,15 @@ def _word_math_tree_to_list(tree, lead_op = None):
     
     #for NV grammar
     elif tree.label() in ('NV'):
-        if isinstance(tree[0], str):
-            output.append(tree[0])
+        for i in tree:
+            if isinstance(i, str):
+                output.append(i)
 
-        else:
-            output.append(tree[0][0])
-            output.append(_word_math_tree_to_list(tree[1]))
+            elif i.label() in ('NV'):
+                output.append(_word_math_tree_to_list(i))
 
+            elif i.label() in ('MULTIPLIER'):
+                output.append(i[0])
     #for S grammar 
     elif tree.label() in ('S'):
         for i in tree:
@@ -360,7 +362,10 @@ def _mid_operator_convert(s):
         if isinstance(s[i], str):
             if s[i] == "square":
                 s[i] = "^ 2"
-                s[i], s[i+1] = s[i+1], s[i]
+                try:
+                    s[i], s[i+1] = s[i+1], s[i]
+                except:
+                    pass
 
             elif s[i] == "twice":
                 s[i] = "2 *"
