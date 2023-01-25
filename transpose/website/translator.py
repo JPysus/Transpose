@@ -430,11 +430,45 @@ def _conversion(sentence):
 # post-processing
 def _postprocessing(sentence_list):
     for i in range(len(sentence_list)):
+        sentence_list[i] = _parenthesis_remover(sentence_list[i])
         sentence_list[i] = _parenthesis_adder(sentence_list[i])
         sentence_list[i] = (' '.join(_flatten([sentence_list[i]])))
         #sentence_list[i] is enclosed in anoter []
         #for input cases like "one"
-    return (sentence_list)
+
+    #use list(set(x)) to remove duplicates
+    return list(set(sentence_list))
+
+def _parenthesis_remover(sentence_element):
+    #[['x', '-', 'y'], '+', 'z']
+    #elements of the sentence_element are
+        #['x', '-', 'y'], '+', 'z'
+    i = 0
+    tuple_ops = ['+', '-', '≠']+list(set(operator['3EQUALITY'].keys()))
+    while i < len(sentence_element):
+        #if being a list is unneeded
+        repetitive = False
+
+        #check if left and right of the list is + or -
+        if isinstance(sentence_element[i], list):
+            temp_bool1 = i-1 > 0
+            temp_bool2 = i+1 < len(sentence_element)
+            if temp_bool1 and temp_bool2:
+                if sentence_element[i-1] in tuple_ops and sentence_element[i+1] in tuple_ops:
+                    repetitive = True
+
+            elif temp_bool1 and not temp_bool2:
+                if sentence_element[i-1] in tuple_ops:
+                    repetitive = True
+
+            elif not temp_bool1 and temp_bool2:
+                if sentence_element[i+1] in tuple_ops:
+                    repetitive = True
+
+        if repetitive:
+            sentence_element = _flatten(sentence_element[:i+1])+sentence_element[i+1:]
+        i += 1
+    return sentence_element
 
 def _semi_flattener(tree_list):
     # list flattener specifically for tree_list
