@@ -140,15 +140,18 @@ def _preprocess(sentence):
         #converts one-half into quotient of one and two
         #adds ", times " if the next token is a number, variable or in LEADING keyword
     while(i < len(postemp)):
-        if postemp[i][1] in ('CD') and i < len(postemp) - 1:
-            if postemp[i+1][1] in ('JJ') and postemp[i+1][0].endswith(("second", "third", "th")):
-                temp2 += 'quotient ' + postemp[i][0] + " and " + postemp[i+1][0] + " , "
-                
-                if i < len(postemp) - 2 and postemp[i+2][0] not in modified_keyword+[',']:
+        if postemp[i][1] in ('CD') and i < len(postemp) - 1 and postemp[i+1][1] in ('JJ') and postemp[i+1][0].endswith(("second", "third", "th")):
+            temp2 += 'quotient ' + postemp[i][0] + " and " + postemp[i+1][0]
+            
+            i += 1
+            if i < len(postemp) - 1:
+                temp2 += ", "
+                if postemp[i+1][0] not in modified_keyword+[',']:
                     temp2 += 'times '
-                i += 2
-                continue
-        temp2 += postemp[i][0]+" "
+                    i += 1
+                    continue
+        else:
+            temp2 += postemp[i][0]+" "
         i += 1
     return temp2
 
@@ -225,6 +228,8 @@ def _name_conversion(sentence):
                 variable.remove(v)
                 variable.append(v)
                 temp.append(v)
+                if i < len(pos) - 1: 
+                    temp.append(',')
             
             #if word is x, y, z, etc...
             elif temp_word in variable:
@@ -345,7 +350,7 @@ def _word_math_tree_to_list(tree, lead_op = None):
             if isinstance(i, str):
                 continue
             
-            elif i.label() in ('S', 'NV'):
+            elif i.label() in ('S', 'NV', "L"):
                 in_list.append(_word_math_tree_to_list(i))
 
             #for MID_WORD -> EXACT | REVERSE
@@ -354,6 +359,7 @@ def _word_math_tree_to_list(tree, lead_op = None):
                 in_list.append(i[0][0])
 
         output.append(in_list)
+
     return output
 
 operator_sign = {
@@ -433,6 +439,7 @@ def _conversion(sentence):
     for tree in trees:
         temp = _word_math_tree_to_list(tree)
         sentence_list.append(_semi_flattener(temp))
+
     for i in range(len(sentence_list)):
         sentence_list[i] = _mid_operator_convert(sentence_list[i])
 
@@ -462,8 +469,9 @@ def _parenthesis_remover(sentence_element):
 
         #check if left and right of the list is + or -
         if isinstance(sentence_element[i], list):
-            temp_bool1 = i-1 > 0
-            temp_bool2 = i+1 < len(sentence_element)
+            sentence_element[i] = _parenthesis_remover(sentence_element[i])
+            temp_bool1 = i - 1 > 0
+            temp_bool2 = i + 1 < len(sentence_element)
             if temp_bool1 and temp_bool2:
                 if sentence_element[i-1] in tuple_ops and sentence_element[i+1] in tuple_ops:
                     repetitive = True
@@ -477,7 +485,9 @@ def _parenthesis_remover(sentence_element):
                     repetitive = True
 
         if repetitive:
-            sentence_element = _flatten(sentence_element[:i+1])+sentence_element[i+1:]
+            sentence_element = sentence_element[:i]+_semi_flattener(sentence_element[i:])
+            sentence_element = _semi_flattener(sentence_element[:i+1])+sentence_element[i+1:]
+            
         i += 1
     return sentence_element
 
