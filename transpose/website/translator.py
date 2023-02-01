@@ -23,10 +23,10 @@ L -> EXACT NV NV | EXACT S S | EXACT S NV | EXACT NV S
 LEADING -> NV ',' LEADING | S ',' LEADING 
 LEADING -> NV 'and' NV | NV 'and' S | S 'and' NV | S 'and' S
 LEADING -> 'and' NV | 'and' S
-O -> NV MID_WORD NV | S MID_WORD S
-O -> S ',' MID_WORD S | S ',' MID_WORD ',' S | S MID_WORD ',' S
-O -> S ',' MID_WORD NV | NV MID_WORD ',' S
+O -> NV MID_WORD NV | S MID_WORD S | S ',' MID_WORD ',' S 
 O -> S MID_WORD NV | NV MID_WORD S 
+O -> S ',' MID_WORD L | L MID_WORD ',' S
+O -> S ',' MID_WORD NV | NV MID_WORD ',' S
 
 NV -> '#VAR#' | '#NUM#' | MULTIPLIER NV | NV 'square'
 MULTIPLIER -> 'square' | 'twice' | 'thrice' | '-'
@@ -56,8 +56,8 @@ operator = {
         'less':['take away'],
     },
     '2REVERSE':{
-        'less_than': ['subtract from', 'less than', 'fewer than'],
-        'more_than': ['more than', 'greater than', 'add to'],
+        'less_than': ['less than', 'fewer than'],
+        'more_than': ['more than', 'greater than'],
     },
     'EQUALITY':{
         '=': ['equal', 'yield'], 
@@ -82,18 +82,17 @@ operator = {
         'thrice': ['thrice'],
     },
 }
-operator_sign = {
-    'more': '+',
-    'less': '-',
-    'times': '*',
-    'divide': '/',
-}
+#special case of "subtracted from", "diminished from", and "added to", etc...
+operator['2REVERSE']['less_than'] += [str(i + " from") for i in operator['EXACT']['less']]
+operator['2REVERSE']['more_than'] += [str(i + " to") for i in operator['EXACT']['more']]
+
 keyword = [word for i in operator.keys() for j in operator[i].keys() for word in operator[i][j]]
 keyword = list(set(keyword+[j for i in operator.keys() for j in operator[i].keys()]))
 keyword.sort(key=len, reverse=True)
 stopword = ["an", "by", "the", "of", "from", "certain", 'as', 'another', 'when', "with"]
     #filter LEADING keywords out
-modified_keyword = list(set(keyword) - set([word for i in operator["LEADING"].keys() for word in operator["LEADING"][i]]))
+leading_keyword = set([word for i in operator["LEADING"].keys() for word in operator["LEADING"][i]])
+modified_keyword = list(set(keyword) - leading_keyword)
 
 #preprocessing
 def _preprocess(sentence):
@@ -143,10 +142,10 @@ def _preprocess(sentence):
     while(i < len(postemp)):
         if postemp[i][1] in ('CD') and i < len(postemp) - 1:
             if postemp[i+1][1] in ('JJ') and postemp[i+1][0].endswith(("second", "third", "th")):
-                temp2 += 'quotient ' + postemp[i][0] + " and " + postemp[i+1][0]
+                temp2 += 'quotient ' + postemp[i][0] + " and " + postemp[i+1][0] + " , "
                 
                 if i < len(postemp) - 2 and postemp[i+2][0] not in modified_keyword+[',']:
-                    temp2 += ', times '
+                    temp2 += 'times '
                 i += 2
                 continue
         temp2 += postemp[i][0]+" "
@@ -356,6 +355,13 @@ def _word_math_tree_to_list(tree, lead_op = None):
 
         output.append(in_list)
     return output
+
+operator_sign = {
+    'more': '+',
+    'less': '-',
+    'times': '*',
+    'divide': '/',
+}
 
 def _mid_operator_convert(s):
     for i in range(len(s)):
