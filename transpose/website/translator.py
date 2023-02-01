@@ -139,21 +139,17 @@ def _preprocess(sentence):
     
         #converts one-half into quotient of one and two
         #adds ", times " if the next token is a number, variable or in LEADING keyword
-    # print(postemp)
     while(i < len(postemp)):
-        if postemp[i][1] in ('CD') and i < len(postemp) - 1 and postemp[i+1][1] in ('JJ') and postemp[i+1][0].endswith(("second", "third", "th")):
-            temp2 += 'quotient ' + postemp[i][0] + " and " + postemp[i+1][0] + ", "
-            
-            i += 1
-            if i < len(postemp) - 2:
-                if postemp[i+1][0] not in modified_keyword+[',']:
-                    temp2 += ', times '
-                    i += 1
-                    continue
-        else:
-            temp2 += postemp[i][0]+" "
+        if postemp[i][1] in ('CD') and i < len(postemp) - 1:
+            if postemp[i+1][1] in ('JJ') and postemp[i+1][0].endswith(("second", "third", "th")):
+                temp2 += 'quotient ' + postemp[i][0] + " and " + postemp[i+1][0] + " , "
+                
+                if i < len(postemp) - 2 and postemp[i+2][0] not in modified_keyword+[',']:
+                    temp2 += 'times '
+                i += 2
+                continue
+        temp2 += postemp[i][0]+" "
         i += 1
-    print(temp2)
     return temp2
 
 # conversions
