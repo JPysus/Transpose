@@ -1,4 +1,9 @@
 
+*.pyc
+*.pyc
+*.pyc
+*.pyc
+*.pyc
+transpose/website/__pycache__/views.cpython-311.pyc
+transpose/website/__pycache__/translator.cpython-311.pyc
 transpose/website/__pycache__/__init__.cpython-311.pyc
-*.pyc
-*.pyc
