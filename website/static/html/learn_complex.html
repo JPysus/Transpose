@@ -1,0 +1,153 @@
+<div class="anchor" id="read"></div>
+  <section class="learn-step section-bg rounded mt-3">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>1. Read</h2>
+        <div class="spacer"></div>
+        <p class="lead d-inline-block">Read the following problem: <mark>The difference of x and five times a number.</mark></p>
+        <p class="info">First, we look for words indicating an unknown quantity. We have 'x', which was already assigned a variable,
+          and 'a number' which is yet to be assigned. Since 'x' was already used to represent an unknown quantity, we
+          should use another letter to assign 'a number'. Usually, we just use the next letter 'y', this will make our
+          phrase to be: <mark><span class="d-inline-block">difference of x and five times y.</mark></span></p>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="anchor" id="identify"></div>
+  <section class="learn-step section-bg rounded mt-3">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>2. Identify</h2>
+        <div class="spacer"></div>
+        <p class="info">Next, we have to identify the keywords in our phrase. In our case, we have two operator keywords namely: 'the
+          difference of' and 'times' (highlighted in green). Each
+          operator keywords have their own operands (highlighted in blue).
+          <br>
+          Since this phrase is ambiguous, it could have more than one possible answers depending on how it is
+          interpreted.
+          <br><br>
+        <div class="card">
+          <div class="card-header">
+            <p class="lead fw-bold">
+              Interpretation 1
+            </p>
+          </div>
+          <div class="card-body info">
+            The keyword 'times' has 'the difference of x and 5' and 'y' as its operands:
+            <p class="lead">
+              <span class="bg-primary bg-opacity-25">The difference of x and 5</span> <span
+                class="bg-success bg-opacity-25">times</span> <span class="bg-primary bg-opacity-25">y</span><br><br>
+            </p>
+            Since 'the difference of x and 5' is another operation, it has its own operator and operands as well:<br>
+            <p class="lead">
+              <span class="bg-success bg-opacity-25">The difference of</span> <span
+                class="bg-primary bg-opacity-25">x</span> and <span class="bg-primary bg-opacity-25">5</span>
+            </p>
+          </div>
+        </div>
+        <br><br>
+        <div class="card">
+          <div class="card-header">
+            <p class="lead fw-bold">
+              Interpretation 2:
+            </p>
+          </div>
+          <div class="card-body info">
+            The keyword 'the difference of' has 'x' and '5 times y' as its operands:
+            <p class="lead">
+              <span class="bg-success bg-opacity-25">The difference of</span> <span
+                class="bg-primary bg-opacity-25">x</span> and <span class="bg-primary bg-opacity-25">5 times
+                y</span><br><br>
+            </p>
+            Since '5 times y' is another operation, it has its own operator and operands as well:<br>
+            <p class="lead">
+              <span class="bg-primary bg-opacity-25">5</span> <span class="bg-success bg-opacity-25">times</span> <span
+                class="bg-primary bg-opacity-25">y</span>
+            </p>
+          </div>
+        </div>
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="anchor" id="analyze"></div>
+  <section class="learn-step section-bg rounded mt-3">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>3. Analyze</h2>
+        <div class="spacer"></div>
+        <p class="info">
+          Now it is time to apply the meaning of our identified operator keywords.
+        <div class="card">
+          <div class="card-header">
+            <p class="lead fw-bold">
+              Interpretation 1
+            </p>
+          </div>
+          <div class="card-body info">
+            Let's start with the keyword 'times', as it has the complete phrase with its operands. Times simply means to
+            multiply, which means that we will multiply the first operand 'the difference of x and 5' by the second operand 'y'.
+            Since 'the difference of x and 5' is another operation within an operation, it is to be performed first. The
+            keyword 'the difference of' means that the first operand 'x' will be subtracted by the second operand '5'
+          </div>
+        </div>
+        <br><br>
+        <div class="card">
+          <div class="card-header">
+            <p class="lead fw-bold">
+              Interpretation 2
+            </p>
+          </div>
+          <div class="card-body info">
+            Let's start with the keyword 'the difference of', as it has the complete phrase with its operands. It means
+            that the first operand 'x' will be subtracted by the second operand '5 times y'.
+            Since '5 times y' is another operation within an operation, it is to be performed first. The keyword 'times'
+            simply means that we multiply the first operand '5' by the second operand 'y'.
+          </div>
+        </div>
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="anchor" id="convert"></div>
+  <section class="learn-step section-bg rounded mt-3">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>4. Convert</h2>
+        <div class="spacer"></div>
+        <p class="info">Lastly, we just have to convert the idea into mathematical symbols.</p>
+        <div class="card">
+          <div class="card-header">
+            <p class="lead fw-bold">
+              Interpretation 1
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="lead d-inline-block"><mark>The difference of x and 5 &#8594 `x - 5`</mark></p><br/>
+            <mark class="lead d-inline-block">multiply the result by y &#8594 `(x - 5) * y)`</mark>
+          </div>
+        </div>
+        <br/><br/>
+        <div class="card">
+          <div class="card-header">
+            <p class="lead fw-bold">
+              Interpretation 2
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="lead d-inline-block"><mark>x multiplied by y &#8594 `5 * y`</mark></p><br>
+        <mark class="lead d-inline-block">the result will be subtracted from the x &#8594 `x - (5 * y)`</mark>
+        </p>
+          </div>
+        </div>
+        <br>
+        <a href="practice" class="bottom_btn btn btn-primary btn-md">Practice
+          translating</a>
+      </div>
+    </div>
+  </section> 

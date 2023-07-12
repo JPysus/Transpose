@@ -1,0 +1,68 @@
+<!-- Check Answer Modal -->
+<div class="modal modalc fade" id="check-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modalc-dialog modal-dialog-centered modalc-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modalc-header ftco-degree-bg" id="check-modal-bg">
+      </div>
+      <div class="modalc-body pt-md-0 text-center">
+        <h2 id="check-modal-header" class="text-shadow"></h2>
+        <div class="icon d-flex align-items-center justify-content-center">
+          <img id="check-modal-image" alt="" class="img-fluid">
+        </div>
+        <br>
+        <h4 id="check-modal-footer" class="mb-2"></h4>
+        <button type="button" class="bn632-hover bn25 mt-3" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Explanation Modal -->
+<div id="explanation" class="modal fade"  data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border border-dark">
+      <div class="modal-header border-bottom border-dark text-white gradient-background">
+        <h2 class="text-shadow modal-title fs-3 fw-bolder"><i class="fa-solid fa-lightbulb"></i>&ensp;Explanation</h2>
+      </div>
+      <div class="modal-body text-center">
+        <p id="explanation-header"  class="fs-3 fw-bolder"></p>
+        <p id="solution" class="fs-6 mb-4"></p>
+        <p id="solution-answer" class="mb-2 fw-semibold"></p>
+      </div>
+      <div class="modal-footer py-1">
+        <button type="button" class="bn632-hover bn25 fw-semibold" data-bs-dismiss="modal">OK!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quiz Modal -->
+<div id="quiz" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 65em;">
+    <div class="modal-content border border-dark">
+      <div class="modal-header border-bottom border-dark text-white gradient-background2">
+        <h2 class="text-shadow modal-title fs-3 fw-bolder"><i class="fa-solid fa-pen-to-square"></i>&ensp;Challenge</h2>
+        <a type="button" class="text-shadow" data-bs-dismiss="modal">
+          <i id="quizCloseBtn"class="link-body-emphasis fa-solid fa-rectangle-xmark fa-2xl"
+          ></i>
+        </a>
+      </div>
+      <div class="modal-body text-center">
+        <table class="table rounded fs-6 text-center">
+          <thead>
+            <tr>
+              <th scope="col" class="text-start" style="width:25%">Difficulty (Score)</th>
+              <th scope="col" class="text-start" style="width:50%">Problem</th>
+              <th scope="col"style="width:25%">Answer</th>
+            </tr>
+          </thead>
+          <tbody id="quizProblems"></tbody>
+        </table>
+      </div>
+      <div class="modal-footer py-1 justify-content-center">
+        <button type="button" id="quizSubmit" class="bn632-hover bn25 fw-semibold">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

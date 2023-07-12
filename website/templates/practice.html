@@ -1,0 +1,314 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- loaded here kasi ayaw if sa layout -->
+<link rel="stylesheet" href="static/css/mathquill.css" />
+<link rel="stylesheet" href="static/css/modal.css" />
+<script src="static/js/mathquill.js"></script>
+<script src="static/js/latex-to-js.js"></script>
+<script>
+  var MQ = MathQuill.getInterface(2);
+</script>
+
+<div id="practice_modal_group">
+</div>
+
+<section class="custom_container">
+  <section class="page-section">
+    <div class="d-flex flex-row fs-5 head_nav pt-3">
+      <a href="learn" type="button" class="mx-3 btn btn-lg btn-warning"
+      data-bs-toggle="popover" data-bs-content="Go Back: Learn" data-bs-placement="top" data-bs-trigger="hover focus">
+        <i class="fa-solid fa-left-long"></i>
+      </a>
+      <a href="translate" type="button" class="mx-3 btn btn-lg btn-warning"
+      data-bs-toggle="popover" data-bs-content="Go Next: Translate" data-bs-placement="top" data-bs-trigger="hover focus">
+        <i class="fa-solid fa-right-long"></i>
+      </a>
+    </div>
+    <div class="py-5 px-custom w-100 section-bg rounded">
+      <div class="section-title">
+        <h2>Practice</h2>
+        <div class="spacer"></div>
+        <p class="desc">
+          Listed in each selection are different variations of sample problems. Try to translate these
+          problems into their equivalent expressions and check if you got the right answer. This will help you
+          familiarize yourself with the 'keywords' and their effect on the sentences or phrases.
+        </p>
+
+        <h6>Note: to use the multiplication operator such as the <i>ex</i> sign (×) or <i>dot</i> sign (⋅),<span id="please_note"> please use asterisk (*) instead</span></h6>
+        <h6>E.g. from (3x × 2) to (3x * 2)</h6>
+        <h6>E.g. from (5 ⋅ 2h) to (5 * 2h)</h6>
+      </div>
+
+      {%
+      set type_det = {
+        'add':['Addition', 'fa-plus'],
+        'sub':['Subtraction', 'fa-minus'],
+        'mul':['Multiplication', 'fa-xmark'],
+        'div':['Division', 'fa-divide'],
+        'equ':['Equality', 'fa-equals'],
+        'exp':['Exponent', 'fa-angle-up']
+      }%}
+      <!-- Operator pills -->
+      <ul class="nav nav-pills justify-content-center mb-3" id="pills-tab" role="tablist"
+        style="--bs-nav-link-color: #47b2e4; --bs-nav-pills-link-active-bg: #47b2e4">
+        {% for i in problems %}
+          <li class="nav-item" role="presentation">
+            <button class="nav-link
+            {% if i == 'add'%}
+            active
+            {%endif%}
+            fw-semibold mx-2" id="pills-{{i}}-tab" data-bs-toggle="pill"
+              data-bs-target="#pills-{{i}}" type="button" role="tab" aria-controls="pills-{{i}}"
+              aria-selected="true">{{type_det[i][0]}} <i class="fa-solid {{type_det[i][1]}}"></i></button>
+          </li>
+        {%endfor%}
+      </ul>
+
+      <div class="tab-content" id="pills-tabContent">
+        {%for i in problems%}
+          <!-- Questions problems -->
+          <div class="tab-pane fade
+            {% if i == 'add'%}
+            show active
+            {%endif%}
+          " id="pills-{{i}}" role="tabpanel" aria-labelledby="pills-{{i}}-tab"
+            tabindex="0">
+            <div class="div_content" id="{{i}}">
+              <br>
+              <div class="table-responsive align-middle px-2 rounded">
+                <table class="table  rounded fs-6 text-center">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-start" style="width:60%">Problem</th>
+                      <th scope="col">Answer</th>
+                      <th scope="col" class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="{{i}}Problems"> </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        {%endfor%}
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <button type="button"  id="btn-quiz" class="btn btn-outline-danger fw-semibold"
+         data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Get access to our translate page as a prize!"
+         data-bs-placement="top"
+        >
+          Challenge for a prize!
+        </button>
+      </div>
+    </div>
+  </section>
+</section>
+
+<script type="text/javascript">
+  $("#practice_modal_group").load("static/html/practice_modals.html")
+</script>
+<!-- for quiz modal -->
+<script type="text/javascript">
+//title casing
+function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
+}
+
+  //enables popover
+  $(document).ready(function(){
+    $('[data-bs-toggle="popover"]').popover();
+  });
+  // quiz is json, and jsons are escaped on unsafe load.
+  // so safe is stated on quiz and problems var.
+  let quiz = {{quiz | safe}}
+  let questions = []
+  $("#btn-quiz").on("click", function(){
+    //picks some givens on json quiz
+    let tiers = [["easy", 3], ["medium", 2], ["hard", 1]]
+    questions = []
+    for(let i in tiers){
+      let used_questions = [-1]
+      let index = -1
+      for(let j = 0; j < tiers[i][1]; j++){
+        while(used_questions.includes(index)){
+          index = Math.floor(Math.random() * quiz[tiers[i][0]].length);
+        }
+        used_questions.push(index)
+        quiz[tiers[i][0]][index]["tier"] = toTitleCase(tiers[i][0]) + " " + "( +"+quiz[tiers[i][0]][index]["score"]+" )"
+        questions.push(quiz[tiers[i][0]][index])
+      }
+    }
+    //generate htmldata to insert the modal
+
+    $("#quizProblems").html("");
+    for(let i in questions){
+      htmldata = "";
+      htmldata += `<tr>`;
+      htmldata += `<td scope="row" class="text-start info"><small>` + questions[i]["tier"] + `</small></td>`;
+      htmldata += `<td scope="row" class="text-start info">` + questions[i]["phrase"] + `</td>`;
+      htmldata += `<td><div type="text" probnum="`+i+`" id="quiz-ans-`+i+`" class="input-mq form-label"></div></td>`;
+      htmldata += `</tr>`;
+      $("#quizProblems").append(htmldata);
+    }
+    //then show modal
+    $("#quiz").modal('show');
+    let answerSpan = document.getElementsByClassName('input-mq');
+
+    //all loaded input-mq, show
+    let answerMathField = []
+    for (let i = 0; i < answerSpan.length; i++) {
+      answerMathField[i] = MQ.MathField(answerSpan[i]);
+    }
+
+    //button "submit" handler
+    $("#quizSubmit").unbind().on("click", function(){
+      var stored_answer = []
+      for(let i in questions){
+        let raw_input = MQ(document.getElementById("quiz-ans-" + i)).latex();
+        let input_value = latex_to_js(raw_input).replace(/\\/g, '')
+        input_value = input_value.replace(/\s/g, '')
+        if(input_value == ""){
+          console.log("no input")
+          $("#quiz-ans-" + i).css('border', '2px solid #ff8d00');
+          stored_answer = []
+          continue
+        }
+        // Disable input
+        $("#quiz-ans-" + i).css('color', 'gray');
+        $("#quiz-ans-" + i).css('border', '1px solid lightgray');
+        $("#quiz-ans-" + i).find('span.mq-textarea textarea').prop("readonly", true);
+        stored_answer.push(input_value)
+      }
+
+      //answer checking
+      if(stored_answer.length == questions.length){
+        var user_score = 0
+        var max_score = 0
+        for(let i = 0; i < questions.length; i++){
+          user_score += questions[i]["answer"].includes(stored_answer[i])*questions[i]["score"]
+          max_score += questions[i]["score"]
+          console.log(questions[i]["answer"].includes(stored_answer[i])*questions[i]["score"])
+        }
+        console.log("Score: " + ((user_score/max_score) * 100).toFixed(2) + "%");
+        if(((user_score/max_score) * 100).toFixed(2) >= 70){
+          // Load correct modal
+          $(document).ready(function () {
+            $("#check-modal-header").html(`You passed the challenge! <i class="fa-solid fa-circle-check"></i>`);
+            $("#check-modal-bg").css("background", "linear-gradient(180deg, #5baf8a, #cccccc)");
+            $("#check-modal-image").attr("src", "images/Correct.png");
+            $("#check-modal-footer").html("You scored "+ ((user_score/max_score) * 100).toFixed(2) + "% ! You really understand how this works! <h6 class='pt-2 text-secondary'>For the prize, the secret keycode for the translate page is: ITJMDBRL</h6>");
+            $("#check-modal").modal('show');
+          });
+        }
+        else {
+          // Load incorrect modal
+          $(document).ready(function () {
+            $("#check-modal-header").html(`Your score didn't quite get there!`);
+            $("#check-modal-bg").css("background", "linear-gradient(  180deg, #8e5aaf, #cccccc)");
+            $("#check-modal-image").attr("src", "images/Incorrect.png");
+            $("#check-modal-footer").html("Nice try! You'll get this on your next try, we believe in you!");
+            $("#check-modal").modal('show');
+          });;
+        }
+        $("#quiz").modal('hide');
+      }
+      else{
+        alert("Answer all of the items!")
+      }
+    })
+  });
+
+</script>
+<script>
+  let problems = {{problems | safe}}
+  function checkAns(type, problemNumber) {
+    var raw_input = MQ(document.getElementById(type + "-ans-" + problemNumber)).latex();
+    //becareful, latex_to_js is designed to be compatible with mathJS only, some translations will be weird
+    input_value = latex_to_js(raw_input).replace(/\\/g, '')
+    console.log(input_value)
+    console.log(problems[type][problemNumber]['ans'][0])
+    console.log(problems[type][problemNumber]['ans'].includes(input_value.replace(/\s/g, '')))
+
+    if (input_value == "" && $("#" + type + "-btn-" + problemNumber).html() != "Explanation") {
+      alert("Please type in your answer first.");
+    }
+    else {
+      if ($("#" + type + "-btn-" + problemNumber).html() == "Check") {
+        if (problems[type][problemNumber]['ans'].includes(input_value.replace(/\s/g, ''))) {
+          // Load correct modal
+          $(document).ready(function () {
+            $("#check-modal-header").html(`Your answer is correct <i class="fa-solid fa-circle-check"></i>`);
+            $("#check-modal-bg").css("background", "linear-gradient(180deg, #5baf8a, #cccccc)");
+            $("#check-modal-image").attr("src", "images/Correct.png");
+            $("#check-modal-footer").html("Keep up the good work!");
+            $("#check-modal").modal('show');
+          });
+        }
+        else {
+          // Load incorrect modal
+          $(document).ready(function () {
+            $("#check-modal-header").html(`Your answer is incorrect <i class="fa-solid fa-circle-xmark"></i>`);
+            $("#check-modal-bg").css("background", "linear-gradient(  180deg, #8e5aaf, #cccccc)");
+            $("#check-modal-image").attr("src", "images/Incorrect.png");
+            $("#check-modal-footer").html("Nice try! Keep practicing to familiarize yourself with the keywords.");
+            $("#check-modal").modal('show');
+          });;
+        }
+        // Disable input
+        $("#" + type + "-btn-" + problemNumber).html("Explanation");
+        $("#" + type + "-ans-" + problemNumber).css('color', 'gray');
+        $("#" + type + "-ans-" + problemNumber).css('border', '1px solid lightgray');
+        $("#" + type + "-ans-" + problemNumber).find('span.mq-textarea textarea').prop("readonly", true);
+      }
+      else {
+        $(document).ready(function () {
+          $("#explanation-header").html(problems[type][problemNumber]['given']);
+          $("#solution").html(problems[type][problemNumber].sol);
+          if ((problems[type][problemNumber].display_ans).length > 1) {
+            $("#solution-answer").html("Answers: `" + problems[type][problemNumber].display_ans[0] + "` or `" + problems[type][problemNumber].display_ans[1] + "`");
+          }
+          else{
+            $("#solution-answer").html("Answer: `" + problems[type][problemNumber].display_ans + "`");
+          }
+          $("#explanation").modal('show');
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        });
+      }
+    }
+  }
+  for(let i in problems){
+    htmldata = "";
+    for(let j in problems[i]){
+      htmldata += `<tr>`;
+      htmldata += `<td scope="row" class="text-start info">` + problems[i][j].given + `</td>`;
+      htmldata += `<td><div type="text" probtype="`+ i +`" probnum="`+j+`" id="`+ i +`-ans-` + j + `" class="input-mq form-label"></div></td>`;
+      htmldata += `<td><a id="`+ i +`-btn-` + j + `" class="btn btn-outline-theme answer float-center" onclick="checkAns('`+ i +`', ` + j + `)">Check</a></td>`;
+      htmldata += `</tr>`;
+
+    }
+    $("#"+ i +"Problems").html(htmldata);
+  }
+    // Input enter = Check
+    $(".input-mq").off("keypress").keypress(function(event){
+      if (event.key === "Enter") {
+        let temp_i = $(this).attr('probtype')
+        let temp_j = $(this).attr('probnum')
+        checkAns(temp_i, temp_j)
+      }
+    });
+
+  var answerSpan = document.getElementsByClassName('input-mq');
+
+  //all loaded input-mq, show
+  var answerMathField = []
+  for (let i = 0; i < answerSpan.length; i++) {
+    answerMathField[i] = MQ.MathField(answerSpan[i]);
+  }
+</script>
+
+{% endblock %}

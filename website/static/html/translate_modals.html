@@ -1,0 +1,81 @@
+
+<!-- Instruction Modal -->
+<div id="instructions" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border border-dark">
+      <div class="modal-header border-bottom border-dark text-white gradient-background">
+        <h2 class="modal-title text-shadow fs-3 fw-bolder"><i class="fa-solid fa-circle-info"></i>&ensp;Instructions</h2>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">Transpose is a simple tool to help users translate English phrases to math phrases. Go through the learn and practice pages first to understand math phrase translations better.</p>
+      </div>
+      <div class="modal-footer py-1 justify-content-between">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="floatingInput" placeholder="Enter Secret Code">
+          <label for="floatingInput"
+        data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Get access to our translate page as a prize!"
+        data-bs-placement="top"
+        >Enter Secret Code</label>
+        </div>
+        <button id="instructions_close" type="button" class="bn632-hover bn25 fw-semibold">OK!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Table Modal -->
+<div class="modal fade" id="table">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 700px">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th scope="col">Addition</th>
+                <th scope="col">Subtraction</th>
+                <th scope="col">Multiplication</th>
+                <th scope="col">Division</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">added to</td>
+                <td>decreased by</td>
+                <td>multiplied by</td>
+                <td>divided by</td>
+              </tr>
+              <tr>
+                <td scope="row">increased by</td>
+                <td>less than</td>
+                <td>the product of</td>
+                <td>the quotient of</td>
+              </tr>
+              <tr>
+                <td scope="row">more than</td>
+                <td>minus</td>
+                <td>times</td>
+                <td>ratio of</td>
+              </tr>
+              <tr>
+                <td scope="row">plus</td>
+                <td>subtracted from</td>
+                <td>twice</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td scope="row">the sum of</td>
+                <td>the difference of</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button type="button" class="bn632-hover bn25 mt-3" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

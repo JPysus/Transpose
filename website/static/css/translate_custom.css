@@ -1,0 +1,103 @@
+#dropdown_bottom_btn.bigger{
+  border: 2px solid pink;
+  margin-bottom: 1.5em;
+  margin-right: 1.0em;
+
+  transition: all 0.4s;
+}
+
+.dropup .dropdown-toggle::after{
+  margin-left:0;
+}
+#dropdown_bottom.show{
+  display:flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  gap: 8px;
+}
+#dropdown_bottom_btn{
+  transition: all 0.4s;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.form-floating:not(.form-control:disabled)::before {
+  pointer-events: none;
+}
+
+/* dropdown hover  */
+
+.dropdown-item:focus, .dropdown-item:hover{
+  color: #1b4670;
+  background-color: #ededed;
+}
+.dropdown-item:active{
+  color: #1275d7;
+  background-color: #d5cfcf;
+}
+/* css quick hacks */
+  textarea {
+    resize: none;
+  }
+  .form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {
+    opacity: 1;
+    color: rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+    height: auto;
+    padding: 0px;
+    padding: 0px 0px 0px 10px;
+    width: 100%;
+    transform: scale(0.982) translateY(0.045rem) translateX(0.1rem);
+    border-radius: 5px 0 0 0;
+}
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+    opacity: 1;
+    color: rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+    height: auto;
+    padding: 0px 0px 0px 10px;
+    width: 100%;
+    transform: scale(0.982) translateY(0.045rem) translateX(0.1rem);
+    border-radius: 5px 0 0 0;
+}
+.form-floating > .form-control:-webkit-autofill ~ label {
+    opacity: 1;
+    color: rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+    height: auto;
+    padding: 0px;
+    padding: 0px 0px 0px 10px;
+    width: 100%;
+    transform: scale(0.982) translateY(0.045rem) translateX(0.1rem);
+    border-radius: 5px 0 0 0;
+}
+
+/* textcomplete custom css  */
+ul.dropdown-menu.textcomplete-dropdown {
+  background: linear-gradient(45deg, rgb(12 78 30), rgb(81 156 217));
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  list-style: none;
+  padding: 1px 0;
+  color: white;
+  font-size: 0.8em;
+  min-width: 150px;
+}
+ul.dropdown-menu.textcomplete-dropdown li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+ul.dropdown-menu.textcomplete-dropdown li span {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+ul.dropdown-menu.textcomplete-dropdown li.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+ul.dropdown-menu.textcomplete-dropdown li.active:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}

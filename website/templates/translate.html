@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- independent css file -->
+<!-- very specific css changes on this page-->
+<!-- prolly shouldnt be in general css file -->
+<link rel="stylesheet" href="/static/css/translate_custom.css">
+
+<!-- Instruction Modal -->
+<div id="instructions" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border border-dark">
+      <div class="modal-header border-bottom border-dark text-white gradient-background">
+        <h2 class="modal-title text-shadow fs-3 fw-bolder"><i class="fa-solid fa-circle-info"></i>&ensp;Instructions</h2>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">Transpose is a simple tool to help users translate English phrases to math phrases. Go through the learn and practice pages first to understand math phrase translations better.</p>
+      </div>
+      <div class="modal-footer py-1 justify-content-between">
+        <a href="practice" type="button" class="btn btn-warning me-1"
+        data-bs-toggle="popover" data-bs-content="Go Back: Practice" data-bs-placement="left" data-bs-trigger="hover focus">
+          <i class="fa-solid fa-left-long"></i>
+        </a>
+
+        <div class="d-flex flex-row justify-content-end">
+          <input type="text" class="form-control me-2" id="codeInput" placeholder="Enter Code"
+          data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-title="Enter Code" data-bs-content="You can get the code by doing the challenge in practice page."
+          data-bs-placement="top">
+          <button id="instructions_close" type="button" class="bn632-hover bn25 fw-semibold">OK!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Table Modal -->
+<div class="modal fade" id="table">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 700px">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th scope="col">Addition</th>
+                <th scope="col">Subtraction</th>
+                <th scope="col">Multiplication</th>
+                <th scope="col">Division</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">added to</td>
+                <td>decreased by</td>
+                <td>multiplied by</td>
+                <td>divided by</td>
+              </tr>
+              <tr>
+                <td scope="row">increased by</td>
+                <td>less than</td>
+                <td>the product of</td>
+                <td>the quotient of</td>
+              </tr>
+              <tr>
+                <td scope="row">more than</td>
+                <td>minus</td>
+                <td>times</td>
+                <td>ratio of</td>
+              </tr>
+              <tr>
+                <td scope="row">plus</td>
+                <td>subtracted from</td>
+                <td>twice</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td scope="row">the sum of</td>
+                <td>the difference of</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button type="button" class="bn632-hover bn25 mt-3" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="custom_container">
+  <div class="py-5 container-fluid">
+      <div class="text-center">
+        <img style="width:276px; height:208px;" src="images/Logo.png">
+        <h1 style="font-family: Bayon; color: white; font-size: 65px; text-shadow: 1px 2px #000;">TRANSPOSE</h1>
+        <h5 class="text-white text-shadow" id="translate_subtitle" style="font-family: Montserrat; ">
+          Translates Verbal Math Phrases into Math Expressions!
+        </h5>
+      </div>
+
+      <div class="spacer py-2"></div>
+      <!-- Translate bar -->
+      <form method="POST" id="sentence_form" class="input-group mb-3 container-sm">
+        <textarea id="sentence" name="sentence" class="form-control rounded-start-3 bg-light border border-light fs-5"
+          type="text" for="sentence" placeholder="Enter math phrase: " style="height:20px"></textarea>
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false"></button>
+        <ul class="dropdown-menu" style="max-height: 200px;overflow-y: auto; max-width: 500px;">
+          {%for i in example_list%}
+          <li class="phrases dropdown-item user-select-none" value="{{i}}"
+            style="width: 400px; white-space: normal; cursor: pointer">
+            {{i}}
+          </li>
+          {%endfor%}
+        </ul>
+        <button class="btn btn-light" style="border-left-color:#000;">Enter</button>
+      </form>
+
+      <!-- Output bar -->
+      <div id="output" class="output"></div>
+  </div>
+
+  <!-- Fixed Buttons -->
+  <div id="bottom_btn" class="btn-group dropup position-fixed bottom-0 end-0 m-3">
+    <button id="dropdown_bottom_btn"type="button" class="btn btn-lg btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
+data-bs-second-toggle="popover" data-bs-content="Options" data-bs-placement="left" data-bs-trigger="hover"
+    >
+    </button>
+      <ul id="dropdown_bottom"class="dropdown-menu bg-transparent border-0 justify-content-end">
+        <!-- Dropdown menu links -->
+<!-- 
+    <div class="d-flex flex-row container fs-5">
+      <a href="/" type="button" class="mx-2 btn btn-light">
+        <i class="fa-solid fa-left-long"></i>
+        Home
+      </a>
+      <a href="practice" type="button" class="mx-1 btn btn-light">
+        Practice
+        <i class="fa-solid fa-right-long"></i>
+      </a>
+    </div> -->
+        <a id="table_btn" class="btn btn-lg btn-light"
+        data-bs-toggle="popover" data-bs-content="Cheatsheet" data-bs-placement="left" data-bs-trigger="hover">
+          <i class="fa-solid fa-table"></i>
+        </a>
+        <a id="instructions_btn" class="btn btn-lg btn-light"
+        data-bs-toggle="popover" data-bs-content="Instructions" data-bs-placement="left" data-bs-trigger="hover"
+        >
+          <i class="fa-solid fa-circle-info"></i>
+        </a>
+      </ul>
+  </div>
+</section>
+
+
+<!-- jquery-textcomplete -->
+<script type="text/javascript" src="static/js/jquery.textcomplete.js"></script>
+
+<!-- custom js, needs jQuery on top -->
+<script type="text/javascript" src="static/js/translate_custom.js"></script>
+<script type="text/javascript" src="static/js/animate_custom.js"></script>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+{% block content %}
+{% set cores = [
+  {
+    "title":"read",
+    "short_desc": "Read and understand the problem. Assign variables for unknown quantities.",
+    "class_icon": "fa-brands fa-readme",
+  },
+  {
+    "title":"identify",
+    "short_desc": "Identify which words signify as the operands and which words signify as operators.",
+    "class_icon": "fa-solid fa-magnifying-glass",
+  },
+  {
+    "title":"analyze",
+    "short_desc":"Analyze each operator keywords and apply their meaning to their corresponding operands.",
+    "class_icon": "fa-solid fa-gear",
+  },
+  {
+    "title":"convert",
+    "short_desc":"Convert the words into mathematical symbols and arrange them based on your analyzation.",
+    "class_icon": "fa-solid fa-retweet",
+  },
+]
+%}
+<section class="custom_container">
+  <section class="page-section">
+    <div class="d-flex flex-row fs-5 head_nav pt-3">
+      <a href="/" type="button" class="mx-3 btn btn-lg btn-warning"
+      data-bs-toggle="popover" data-bs-content="Go Back: Home" data-bs-placement="top" data-bs-trigger="hover focus">
+        <i class="fa-solid fa-left-long"></i>
+      </a>
+      <a href="practice" type="button" class="mx-3 btn btn-lg btn-warning"
+      data-bs-toggle="popover" data-bs-content="Go Next: Practice" data-bs-placement="top" data-bs-trigger="hover focus">
+        <i class="fa-solid fa-right-long"></i>
+      </a>
+    </div>
+    <div class="py-5 px-custom w-100 section-bg rounded">
+      <div class="section-title">
+        <div class="top_title rounded-3 d-inline-flex justify-content-center align-items-center">
+          <h2>Learn - </h2>
+          <div tabindex="0" id="top_btn" class="btn btn-light" type="button"
+            data-bs-toggle="tooltip" data-bs-title="Click Me!" data-bs-placement="top" data-bs-trigger="hover"
+          ></div>
+        </div>
+        <div class="spacer"></div>
+        <p class="desc">English phrases or sentences can be translated easily into their corresponding mathematical expressions or
+          equations by following these four simple steps:</p>
+      </div>
+
+      <div class="row">
+        {%for i in range(cores|count)%}
+        
+        <div class="col-xl-3 col-md-6 mt-4 mt-md-0 my-md-4 d-flex align-items-stretch text-center" onclick="location.href='#{{cores[i]["title"]}}';" style="cursor: pointer;">
+          <div class="icon-box">
+            <div class="icon">
+              <i class="{{cores[i]["class_icon"]}}"></i>
+            </div>
+            <div class="section-subtitle">
+              <h4>{{i+1}}. {{cores[i]["title"]}}</h4>
+            </div>
+            <p class="short_desc">{{cores[i]["short_desc"]}}</p>
+          </div>
+        </div>
+
+        {%endfor%}
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- loaded w/ jquery -->
+  <div id="lower_content_learn">
+
+  </div>
+</section>
+
+<!-- custom js -->
+<script type="text/javascript">
+  //enables tooltip
+  $(document).ready(function(){
+    $('#top_btn[data-bs-toggle="tooltip"]').tooltip();
+    $('#top_btn[data-bs-toggle="tooltip"]').on('shown.bs.tooltip', function () {
+        $('.tooltip')
+          .find('.tooltip-inner')
+          .addClass('animated updown floating_tooltip-inner')
+    })
+  });
+
+  //change lower content button
+  //#top_btn on click event
+  $("#top_btn").click(function(){
+    chr = $(this).attr("value")
+    htmldata= ""
+    htmlvalue=""
+    //if s, then amke it c next time
+    //then viceversa
+    switch(chr){
+      case "c":
+        htmldata = "Simple Math Phrase"
+        htmlvalue= "s"
+      break;
+
+      default:
+        htmldata = "Ambiguous Math Phrase"
+        htmlvalue= "c"
+    }
+
+    $.when(
+      $(this).html(htmldata), 
+      $(this).attr("value", htmlvalue)
+      )
+      .done(function(){
+        load_content(htmlvalue);
+      })
+  });
+
+  function load_content(chr){
+    let directory = ""
+    // if c, load complex || otherwise load simple
+    switch(chr){
+      case "c":
+        directory = 'static/html/learn_complex.html'
+      break;
+
+      default:
+        directory = 'static/html/learn_simple.html'
+    }
+
+    $(document).ready(function(){
+      $.when($("#lower_content_learn").load(directory).hide().fadeIn('slow'))
+      .done(function(){
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      });
+       
+      
+    })
+  }
+
+  $.when(
+      $("#top_btn").html("Simple Math Phrase"), 
+      $("#top_btn").attr("value", "s")
+    )
+    .done(function(){
+      load_content($('#top_btn').attr("value"))
+    })
+</script>
+{% endblock %}

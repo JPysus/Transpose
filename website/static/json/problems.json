@@ -1,0 +1,344 @@
+{
+   "add":[
+      {
+         "given":"4 more than 11",
+         "ans":[
+            "11+4"
+         ],
+         "display_ans":[
+            "11 + 4"
+         ],
+         "sol":"The operator keyword '<b>more than</b>' implies that the first operand '<b>4</b>' will be added to the second operand '<b>11</b>'."
+      },
+      {
+         "given":"3 plus the sum of 9 and x",
+         "ans":[
+            "3+9+x",
+            "3+(9+x)"
+         ],
+         "display_ans":[
+            "3 + (9 + x)"
+         ],
+         "sol":"The first operator '<b>plus</b>' has operands '<b>3</b>' and '<b>the sum of 9 and x</b>'. Since the second operand is another operation,\nit will be grouped and enclosed by a pair of parentheses."
+      },
+      {
+         "given":"A number x added to 16",
+         "ans":[
+            "16+x"
+         ],
+         "display_ans":[
+            "16 + x"
+         ],
+         "sol":"The keyword '<b>added to</b>' implies to add the first \noperand '<b>16</b>' to the second operand '<b>number</b>' which we will be assign as '<b>x</b>'."
+      },
+      {
+         "given":"Total of 17 and 5x",
+         "ans":[
+            "17+5x"
+         ],
+         "display_ans":[
+            "17 + 5x"
+         ],
+         "sol":"The word '<b>total of</b>' means to add the two operands together. The order of operands will not matter."
+      },
+      {
+         "given":"The sum of 6 and x increased by 2",
+         "ans":[
+            "6+x+2",
+            "(6+x)+2",
+            "6+(x+2)"
+         ],
+         "display_ans":[
+            "(6 + x) + 2",
+            "6 + (x + 2)"
+         ],
+         "sol":"This is an ambigous phrase. <br><br>\n<b>Solution 1:</b><br>\nThe first operator '<b>The sum of</b>' has operands '<b>6</b>' and '<b>x</b>'. \nThe phrase '<b>increased by 2</b>' means to add 2 to the first operation '<b>The sum of 6 and x</b>'<br><br>\n<b>Solution 2:</b><br>\nThe first operator '<b>The sum of</b>' has operands '<b>6</b>' and '<b>x increased by 2</b>'. \nSince the second operand is another operation, it will be grouped and enclosed by a pair of parentheses.<br>"
+      }
+   ],
+   "sub":[
+      {
+         "given":"12 less than 19\t",
+         "ans":[
+            "19-12"
+         ],
+         "display_ans":[
+            "19 - 12"
+         ],
+         "sol":"The operator keyword '<b>less than</b>' implies that the first operand '<b>12</b>' will be subtracted from the second operand '<b>19</b>'."
+      },
+      {
+         "given":"3 minus the difference of 2 and 4",
+         "ans":[
+            "3-2-4",
+            "3-(2-4)"
+         ],
+         "display_ans":[
+            "3 - (2 - 4)"
+         ],
+         "sol":"The first operator '<b>minus</b>' has operands '<b>3</b>' and '<b>the difference of 2 and 4</b>'. Since the second operand is another operation, \nit will be grouped and enclosed by a pair of parentheses."
+      },
+      {
+         "given":"13 subtracted by 6",
+         "ans":[
+            "13-6"
+         ],
+         "display_ans":[
+            "13 - 6"
+         ],
+         "sol":"The keyword '<b>subtracted by</b>' implies to subtract the second \noperand '<b>6</b>' to the first operand '<b>13</b>'."
+      },
+      {
+         "given":"13 subtracted from 6",
+         "ans":[
+            "6-13"
+         ],
+         "display_ans":[
+            "6 - 13"
+         ],
+         "sol":"The keyword '<b>subtracted from</b>' implies to subtract the first \noperand '<b>13</b>' to the second operand '<b>6</b>'."
+      },
+      {
+         "given":"The difference of 5x and 2 decreased by 8",
+         "ans":[
+            "5x-2-8",
+            "(5x-2)-8",
+            "5x-(2-8)"
+         ],
+         "display_ans":[
+            "(5x - y) - 8"
+         ],
+         "sol":"This is an ambigous phrase. <br><br>\n<b>Solution 1:</b><br>\nThe first operator '<b>The sum of</b>' has operands '<b>5x</b>' and '<b>y</b>'. \nThe phrase '<b>decreased by 8</b>' means to subtract 8 from the first operation '<b>The sum of 6 and x</b>'<br><br>\n<b>Solution 2:</b><br>\nThe first operator '<b>The sum of</b>' has operands '<b>5x</b>' and '<b>y-8</b>'. \nSince the second operand is another operation, it will be grouped and enclosed by a pair of parentheses.<br>"
+      }
+   ],
+   "mul":[
+      {
+         "given":"4 multiplied by 7",
+         "ans":[
+            "4*7",
+            "(4)(7)",
+            "(4)7",
+            "4(7)"
+         ],
+         "display_ans":[
+            "4 * 7"
+         ],
+         "sol":"The keyword '<b>multiplied by</b>' is pretty straightforward. We multiply the first operand \n'<b>4</b>' by the second operand '<b>7</b>'."
+      },
+      {
+         "given":"2 times the product of 4 and 4",
+         "ans":[
+            "2*4*4",
+            "2*(4*4)",
+            "2(4*4)"
+         ],
+         "display_ans":[
+            "2 * (4 * 4)"
+         ],
+         "sol":"The first operator '<b>times</b>' has operands '<b>2</b>' and '<b>the product of 4 and 4</b>'. Since the second operand is another operation, \nit will be grouped and enclosed by a pair of parentheses."
+      },
+      {
+         "given":"Twice a number x",
+         "ans":[
+            "2x",
+            "2*x",
+            "2(x)"
+         ],
+         "display_ans":[
+            "2 * x"
+         ],
+         "sol":"The keyword '<b>twice</b>' means that the value '<b>a number x</b>' or simply '<b>x</b>' will be repeated two times."
+      },
+      {
+         "given":"Thrice 5x",
+         "ans":[
+            "3*5x",
+            "3*(5x)",
+            "3(5*x)",
+            "3(5x)",
+            "3(5(x))"
+         ],
+         "display_ans":[
+            "3 * 5x"
+         ],
+         "sol":"The keyword '<b>thrice</b>' is just the '<b>3<b>' version of twice. It means that the value '<b>5x</b>' will be repeated three times."
+      },
+      {
+         "given":"The product of 6 and a number x",
+         "ans":[
+            "6*x",
+            "6x",
+            "6(x)"
+         ],
+         "display_ans":[
+            "6 * x"
+         ],
+         "sol":"The keyword '<b>the product of</b>' implies that the first operand '<b>6</b>' will be multiplied by the second operand '<b>a number<b>' which we will assign as '<b>x</b>'."
+      }
+   ],
+   "div":[
+      {
+         "given":"2 divided by x\t",
+         "ans":[
+            "2/x"
+         ],
+         "display_ans":[
+            "2 / x"
+         ],
+         "sol":"The keyword '<b>divided by</b>' is pretty straightforward. We divide the first operand \n'<b>2</b>' by the second operand '<b>x</b>'."
+      },
+      {
+         "given":"The quotient of x and 14 divided by 3",
+         "ans":[
+            "x/14/3",
+            "(x/14)/3",
+            "x/(14/3)"
+         ],
+         "display_ans":[
+            "((x / 14)) / 3"
+         ],
+         "sol":"This is an ambigous phrase. <br><br>\n<b>Solution 1:</b><br>\nThe first operator '<b>The quotient of</b>' has operands '<b>x</b>' and '<b>14</b>'. \nThe phrase '<b>divided by 3</b>' means to divide the first operation by 3'<b>The quotient of x and 14</b>'<br><br>\n<b>Solution 2:</b><br>\nThe first operator '<b>The quotient of</b>' has operands '<b>x</b>' and '<b>14 divided by 3</b>'. \nSince the second operand is another operation, it will be grouped and enclosed by a pair of parentheses.<br>"
+      },
+      {
+         "given":"The ratio of 6 and 18",
+         "ans":[
+            "6/18"
+         ],
+         "display_ans":[
+            "6 / 18"
+         ],
+         "sol":"The keyword '<b>ratio of</b>' indicates a quantity's value compared to another, usually by dividing them. In this case, \n'<b>6</b>' will be divided by '<b>18</b>' to show how small '<b>6</b>' is compared to '<b>18</b>'."
+      },
+      {
+         "given":"One-third of a number x",
+         "ans":[
+            "1/3x",
+            "(1/3)*x",
+            "x/3"
+         ],
+         "display_ans":[
+            "1/3x",
+            "x/3"
+         ],
+         "sol":"The keyword '<b>one-third of</b>' indicates a third of a quantity, which is equivalent to the quotient of a number x when it is divided by three. \nIn this case, '<b>x</b>' will be divided by '<b>3</b>'."
+      },
+      {
+         "given":"One-half of a number x, divided by 9",
+         "ans":[
+            "1/2x/9",
+            "(1/2x)/9",
+            "((1/2)*x)/9",
+            "(x/2)/9"
+         ],
+         "display_ans":[
+            "((1/2x)) / 9",
+            "((x/2))/9"
+         ],
+         "sol":"The keyword '<b>one-half of</b>' indicates the half of a quantity, which is equivalent to the quotient of a number x when it is divided by two. \nIn this case, '<b>x</b>' will be divided by '<b>2</b>'. With the help of the <b>comma</b>, we know that the second phrase '<b>divided by 9</b>', will be performed \nonly after the first operation."
+      }
+   ],
+
+   "equ":[
+      {
+         "given":"x is equals to y",
+         "ans":[
+            "x=y"
+         ],
+         "display_ans":[
+            "x = y"
+         ],
+         "sol":"Simply convert the keyword '<b>is equals to</b>' into '<b>=</b>' sign."
+      },
+      {
+         "given":"x is more than y",
+         "ans":[
+            "x>y"
+         ],
+         "display_ans":[
+            "x > y"
+         ],
+         "sol":"The word '<b>is</b>' before the phrase '<b>more than</b>', is the reason why we used '<b> > </b>' symbol instead of '<b> + </b>'."
+      },
+      {
+         "given":"x is fewer than y",
+         "ans":[
+            "x<y"
+         ],
+         "display_ans":[
+            "x < y"
+         ],
+         "sol":"The word '<b>is</b>' before the phrase '<b>fewer than</b>', is the reason why we used '<b> < </b>' symbol instead of '<b> - </b>'."
+      },
+      {
+         "given":"5x plus 3 is equals to 8",
+         "ans":[
+            "5x+3=8"
+         ],
+         "display_ans":[
+            "5x + 3 = 8"
+         ],
+         "sol":"Simply convert the keyword '<b>is equals to</b>' into '<b>=</b>' sign, and '<b>plus</b>' into '<b>+</b>'."
+      },
+      {
+         "given":"Sum of x, y, and z is less than 8 subtracted by x plus z",
+         "ans":[
+            "x+y+z<8-x+z"
+         ],
+         "display_ans":[
+            "x + y + z < 8 - x + z"
+         ],
+         "sol":"The '<b>sum of</b>' keyword is followed by '<b>x</b>', '<b>y</b>', and '<b>z</b>', so we placed a '<b>plus `+`</b>' sign in-between of the three letters involved. \nThen replaced the exact keywords in the sentence such as '<b>is less than</b>', '<b>subtracted by</b>', and '<b>plus</b>' into their sign counterparts."
+      }
+   ],
+   "exp":[
+      {
+         "given":"Square of x",
+         "ans":[
+            "pow(x,2)"
+         ],
+         "display_ans":[
+            "x ^ 2"
+         ],
+         "sol":"Square means exponentiating the term (constant or variable, in this example, the '<b>x</b>') to <b>2</b>.\n In short, we added '<b>^ 2</b>' after the '<b>x</b>' because of the 'square' keyword."
+      },
+      {
+         "given":"The cube of a number x",
+         "ans":[
+            "pow(x,3)"
+         ],
+         "display_ans":[
+            "x ^ 3"
+         ],
+         "sol":"Cube means exponentiating the term (constant or variable, in this example, the '<b>x</b>') to <b>3</b>.\n In short, we added '<b>^ 3</b>' after the '<b>x</b>' because of the 'cube' keyword."
+      },
+      {
+         "given":"x raised to the power of y",
+         "ans":[
+            "pow(x,y)"
+         ],
+         "display_ans":[
+            "x ^ y"
+         ],
+         "sol":"Simply convert the keyword '<b>raised to the power of</b>' into '<b>^</b>' sign, which is an exponent sign."
+      },
+      {
+         "given":"x raised to y",
+         "ans":[
+            "pow(x,y)"
+         ],
+         "display_ans":[
+            "x ^ y"
+         ],
+         "sol":"Simply convert the keyword '<b>raised to</b>' into '<b>^</b>' sign, which is an exponent sign."
+      },
+      {
+         "given":"x to the third power",
+         "ans":[
+            "pow(x,3)"
+         ],
+         "display_ans":[
+            "x ^ 3"
+         ],
+         "sol":"Simply convert the keyword into '<b>^</b>' sign, which is an exponent sign."
+      }
+   ]
+}

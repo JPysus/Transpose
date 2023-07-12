@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- home page html -->
+<div id="home_page" class="">
+  <div class="container px-3 pt-5" style="text-align: -webkit-center;">
+    <div class="col-lg-8 col-xl-7 col-xxl-6">
+      <div class="mb-5 text-center">
+        <img style="width:276px; height:208px;" src="images/Logo.png">
+        <h1 class="title_custom mb-4 text-shadow">TRANSPOSE</h1>
+          <p class="home_body text-light mb-5 px-2 text-shadow"></p>
+        <a class="bn632-hover bn19" href="learn"></a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- home page html -->
+
+<!-- home page content custom js -->
+<script src="/static/js/lettering_custom.js"></script>
+<script type="text/javascript">
+const body_text = "Transpose is an educational web app intended to supplement the learning of students regarding translations of English phrases to their mathematical symbol equivalents."
+
+function bounce(){
+  //adds bounce bounce
+  $(document).ready(function() {
+    setTimeout(() => {
+      $(".bn632-hover.bn19")
+      .addClass("animate__animated animate__bounce")
+      .on("animationend", function(){
+        $(this).removeClass('animate__animated animate__bounce')
+        setTimeout(() => {
+          $(this).addClass('animate__animated animate__bounce') 
+        }, "2000");
+      })
+    }, "1000");; 
+  });
+}
+$(function() {
+  lettering(".home_body", body_text, 0, 50, bounce);
+});
+
+</script>
+<!-- home page content custom js -->
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="custom_container">
+  <section class="page-section">
+    <div class="py-5 px-custom w-100 section-bg rounded">
+      <div class="section-title">
+        <h2>The Team</h2>
+      </div>
+
+      <div class="row justify-content-center">
+
+        <div class="col-xl-4 col-md-6 d-flex align-items-stretch text-center">
+          <div class="card">
+            <img class="card-img-top" src="/images/JMDB.png" alt="Card image cap">
+            <div class="card-body">
+                <p class="card-title fw-semibold" align = "center">DE BORJA, JOHN MICHAEL</p>
+            </div>
+            <div class="card-footer">
+                <p>Did some stuffs.</p>
+                <a href="https://www.facebook.com/iamjmdb" target="_blank" style= "text-decoration:none; color: inherit;" class="fa-brands fa-square-facebook"></a>
+                <a href="https://www.linkedin.com/in/john-michael-de-borja-a99b8b248/" target="_blank" style= "text-decoration:none; color: inherit;" class="fa-brands fa-linkedin"></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0 text-center" data-aos="zoom-in" data-aos-delay="200">
+          <div class="card">
+            <img class="card-img-top" src="/images/RL.png" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-title fw-semibold" align = "center">LATURNAS, REDEL</p>
+            </div>
+            <div class="card-footer">
+                <p>DESIGN</p>
+                <a href="https://www.facebook.com/redel135/" target="_blank" style= "text-decoration:none; color: inherit;" class="fa-brands fa-square-facebook"></a>
+                <a href="https://www.linkedin.com/in/redel-laturnas-05bb11248/" target="_blank" style= "text-decoration:none; color: inherit;" class="fa-brands fa-linkedin"></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0 text-center" data-aos="zoom-in" data-aos-delay="300">
+          <div class="card">
+            <img class="card-img-top" src="/images/IT.png" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-title fw-semibold" align = "center">TRESVALLES, IRISH</p>
+            </div>
+              <div class="card-footer">
+                <p>CONTENT</p>
+                <a href="https://www.facebook.com/eyerish2001" target="_blank" style= "text-decoration:none; color: inherit;" class="fa-brands fa-square-facebook"></a>
+                <a href="https://www.linkedin.com/in/irish-tresvalles-329204241/" target="_blank" style= "text-decoration:none; color: inherit;" class="fa-brands fa-linkedin"></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section><!-- End Learn Section -->
+</section>
+
+<section class="pt-5 custom_container">
+  <section class="page-section">
+    <div class="py-5 px-custom w-100 section-bg rounded">
+
+    <div class="section-title container">
+      <h2>About Us</h2>
+      <div class="spacer"></div>
+      <p class="lead text-center">
+        Hello! We are college students from the Technological Institute of the Philippines, and this website you’re viewing is our work for our thesis course.
+      </p>
+      <p class="lead text-center">
+        Transpose, this website of ours, is made to help learners understand math translations easier. The functionalities and theme of the website are minimal by design so we can guide our users more efficiently.
+
+      </p>
+      <p class="lead text-center">
+        We’ve come up with this idea because of our personal experience about how some of our younger family members struggle with stuff like math phrase translations as well, so we wanted our thesis to assist them (and others with similar experiences) in their learning journey.
+
+      </p>
+      <p class="lead text-center">
+        If you have some questions (or if you just want to say hi!) please feel free to contact us at our socials!
+      </p>
+    </div>
+  </section>
+
+</section>
+
+<section class="pt-5 custom_container">
+  <section class="page-section">
+    <div class="py-3 px-custom w-100 section-bg rounded">
+
+    <div class="section-title container">
+      <h2>How Does the Translate Page Work?</h2>
+      <div class="spacer"></div>
+      <p class="lead text-start">
+        The server that the website uses allows us to run a script that we have in our hands(or kind of stored in our accounts in their servers), and that script we use contains the algorithm which does the translation!
+      </p>
+      <p class="lead text-start">
+        We’ve generalized the major processes the algorithm goes through to give us an output in the Translate page:
+      </p>
+      <div class="card mt-3">
+        <div class="card-header">
+          <p class="lead fw-bold">
+            Pre-processing
+          </p>
+        </div>
+        <div class="card-body text-start">
+          Pre-processing is a general term that says we try to shape and form the data we plan to use. Data tends to be noisy, and computers don’t like noise, so we must help our computers understand what we want them to see.
+          <br/><br/>
+          For example, we have this sentence “Y added to the product of 2, forty-four, eight, and a number.”. We will follow a series of steps which cleans our input one by one.
+          <br/><br/>
+          <ol class="ms-4 lead container text-start">
+            <li>Turn all letters into lowercase</li>
+            <li>Ignore all unwanted punctuations (e.g. remove the period)</li>
+            <li>Remove words that don’t add value to the sentence (e.g. “a”, “of”, “the”) </li>
+          </ol>
+          Applying these steps should give us a more readable input for the computer, “y added to product 2, forty-four, eight, and a number”. Of course there’s more nuance to actual application of this in code, but this is the general idea of the term “pre-processing”.
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <div class="card-header">
+          <p class="lead fw-bold">
+            Conversion(Processing)
+          </p>
+        </div>
+        <div class="card-body text-start">
+          This section is divided into three different conversion steps, number conversion, word conversion, and tree conversion.
+          <br/>
+            <br/>
+          <div class="ms-1 py-3 lead text-start fw-lighter">
+            1. Numbers conversion: Convert all worded numbers into numbers
+            <br/>
+            <small class="fw-light">
+              From 
+              <small class="text-danger">
+                y added to product 2, <p class="fw-bold d-inline">forty-four</p>, <p class="fw-bold d-inline">eight</p>, and a number
+              </small>
+              <br/>
+              to
+              <small class="text-primary">
+                y added to product 2, <p class="fw-bold d-inline">44</p>, <p class="fw-bold d-inline">8</p>, and a number
+              </small>
+            </small>
+          </div>
+
+          <div class="ms-1 py-3 lead text-start fw-lighter">
+            2. Word conversion: Convert all unknown words into variable
+            <br/>
+            <small class="fw-light">
+              From 
+              <small class="text-danger">
+                y added to product 2, 44, 8, and <p class="fw-bold d-inline">a number</p>
+              </small>
+              <br/>
+              to
+              <small class="text-primary">
+                y added to product 2, 44, 8, and <p class="fw-bold d-inline">x</p>
+              </small>
+            </small>
+          </div>
+
+          <div class="ms-1 pt-3 lead text-start fw-lighter">
+            3. Tree conversion: Convert the input to a readable format for the algorithm
+          </div>
+          Now that the input has been cleaned, and constants and variables have been determined, our algorithm should be able to see how the structure of the sentence should be. In a nutshell, we defined our own grammar rules which allows the algorithm to identify the valid math phrases in the sentence. Using the pre-process example, this is what the algorithm will see as the sentence structure.
+          <br/><br/>
+          <div class="text-center">
+            <img src="images/grammar_tree.png" class="rounded float-center img-thumbnail" alt="Grammar Tree">
+            <br/>
+            <small>Note: You can see in the image that the "added to" phrase is recognized as "more than". This is because phrase have been standardize, which simply means other similar phrase like "greater than", and "added to" becomes "more_than" in the tree conversion</small>
+          </div>
+          <br/><br/>
+          There is more that can be said in this image but suffice to say, the algorithm thinks that the sentence is valid, we just need to do some post-processing.
+          <br/><br/>
+          We decided this is a good way of representing math phrases so we can easily see the sentence agreement in the input (which belongs to which), so the algorithm knows which to include in an enclosing parentheses and not.
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <div class="card-header">
+          <p class="lead fw-bold">
+            Post-processing
+          </p>
+        </div>
+        <div class="card-body text-start">
+          Post-processing is also another general term when we want to reformat the current output into a simpler form.
+          <br/><br/>
+          In our situation, to post-process this, we will have to rely on our own logic to transform it. If we assume that the BLUE words in the tree image are instructions and structure definitions, the algorithm should be able to convert the tree into an Object List, which we can then convert the obvious keywords into math operators.
+          <br/><br/>
+          For example, the grammar tree above will be converted into
+          <br/><br/>
+          <div class="ms-1 lead text-start" style="font-weight: 100;">
+            => [y, more_than, [product, 2, 44, 8, x]]
+            <br/>
+            => [[product, 2, 44, 8, x], +, y]
+            <br/>
+            => [[2, *, 44, *, 8, *, x], +, y]
+            <br/>
+            => (2 * 44 * 8 * x) + y
+          </div>
+          <br/><br/>
+          <div class="text-center">
+            And the algorithm completes its instructions!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+<script type="text/javascript">
+
+$(document).ready(function(){
+  $('[data-bs-second-toggle="popover"]').popover();
+});
+</script>
+{% endblock %}

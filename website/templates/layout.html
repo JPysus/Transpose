@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Transpose | English Sentence to Math Expression Translator </title>
+  <link rel="icon" href="https://i.ibb.co/YTkmTmt/Logo.png" type="image/x-icon type">
+  
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <!-- bootstrap -->
+
+  <!-- mathquill, modified -->
+  <link rel="stylesheet" href="/static/css/mathquill.css" />
+  <script src="/static/js/mathquill.js"></script>
+  <!-- mathquill, modified -->
+
+  <!-- animate.css -->
+  <link rel="stylesheet" href="static/css/animate.min.css" />
+  <!-- animate.css -->
+  
+  <!-- css.buttons, modified -->
+  <link rel="stylesheet" href="static/css/css_buttons.css" />
+  <!-- css.buttons, modified -->
+
+  <!-- custom css -->
+  <link rel="stylesheet" href="/static/css/navbar.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- custom css -->
+</head>
+
+<body>
+  <!-- NavBar -->
+  <nav class="navbar navbar-expand-md fixed-top bg-light" style="--bs-navbar-padding-y:0; z-index: 1056;">
+    <div class="container-fluid">
+      <a class="navbar-brand nav_name" href="\">TRANSPOSE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item mx-4">
+            <a class="nav-link" id="home" href="\">Home</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" id="learn" href="learn">Learn</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" id="practice" href="practice">Practice</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" id="translate" href="translate">Translate</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" id="about_us" href="about_us" disabled>About Us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- NavBar -->
+
+  <!-- navbar js active selector -->
+  <script type="text/javascript">
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      var compare = (window.location.href).replace(/#[a-zA-Z]*/, '')
+      if (link.href === compare) {
+        link.classList.add("active");
+        link.setAttribute("aria-current", "page");
+      }
+    });
+  </script>
+  <!-- navbar js active selector -->
+
+  <!-- jQuery -->
+  <script src="/static/js/jquery-3.6.3.min.js"></script>
+  <!-- jQuery -->
+
+  <!-- content -->
+  {% block content %}{% endblock %}
+  <a id="toTopBtn" class="btn btn-outline-primary position-fixed bottom-0 end-0 m-3" style="display:none;"
+  data-bs-toggle="tooltip" data-bs-title="Back to Top" data-bs-placement="top" data-bs-trigger="hover"
+  >
+    ☝🏻 
+  </a>
+  <!-- content -->
+
+  <!-- bootstrap js-->
+  <script src="/static/js/bootstrap.bundle.min.js"></script>
+  <!-- bootstrap js-->
+
+  <!-- font-awesome js-->
+  <script src="/static/js/font-awesome.js"></script>
+  <!-- font-awesome js-->
+
+  <!-- mathjax -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script>
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  </script>
+  <!-- mathjax -->
+
+  <!-- js_cookie -->
+  <script src="/static/js/jquery_lettering.js"></script>
+  <!-- js_cookie -->
+
+  <!-- jquery_lettering -->
+  <script src="/static/js/js.cookie.min.js"></script>
+  <!-- jquery_lettering -->
+
+  <!-- custom js, scroll back to top -->
+  <script>
+    $(document).ready(function() {
+      //enables popover on keycode input
+      $('[data-bs-toggle="popover"]').popover();
+
+      //tooltip
+      $('#toTopBtn[data-bs-toggle="tooltip"]').tooltip();
+
+      //animate.css
+      $("#toTopBtn").css("animation-delay", "0s")
+      $(window).scroll(function() {
+        if ($(this).scrollTop() > 20) {
+          $('#toTopBtn')
+            .removeClass("animate__animated animate__backOutDown")
+            .delay("250")
+            .addClass("animate__animated animate__backInUp")
+            .show();
+        } else {
+          $('.tooltip').hide()
+          $('#toTopBtn')
+            .removeClass("animate__animated animate__backInUp")
+            .delay("250")
+            .addClass("animate__animated animate__backOutDown")
+            .one('animationend', function(){
+              if (!$(this).hasClass("animate__backInUp") && $(this).hasClass("animate__backOutDown"))
+                $(this).hide()
+              
+
+            });
+          ;
+        }
+      });
+
+      $('#toTopBtn').click(function() {
+        $("html, body").animate({
+          scrollTop: 0
+        }, 1);
+        return false;
+      });
+    });
+  </script>
+  <!-- custom js, scroll back to top -->
+</body>
+
+</html>
