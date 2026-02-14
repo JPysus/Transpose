@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request
 from .translator import translate as tl, prettier
 import random
 import json, os
-
+import requests
 #top directory
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 views = Blueprint('views', __name__)
@@ -57,3 +57,8 @@ def submit_sentence():
         temp += "<br/> <hr/>".join(["`"+prettier(i)+"`" for i in lis])
         lis = temp
     return lis
+
+@views.route('/_steam')
+def steam():
+	req = requests.get("https://steamcommunity.com/miniprofile/235021538")
+	return req.text
