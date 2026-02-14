@@ -5,7 +5,7 @@
 
 # # 1. Define a path inside your project environment
 # # This puts it in /mainproject/website/venv/nltk_data
-# project_nltk_path = os.path.join(os.getcwd(), 'website/venv', 'nltk_data')
+# project_nltk_path = os.path.join(os.getcwd(), 'website', 'nltk_data')
 
 # # 2. Create the folder if it doesn't exist
 # if not os.path.exists(project_nltk_path):
@@ -19,6 +19,16 @@
 # nltk.download('punkt_tab', download_dir=project_nltk_path)
 # nltk.download('averaged_perceptron_tagger_eng', download_dir=project_nltk_path)
 # nltk.download('punkt', download_dir=project_nltk_path)
+import os
+import nltk
+from flask import Flask
+
+# Get the path to the folder you just pushed to GitHub
+base_dir = os.path.dirname(os.path.abspath(__file__))
+nltk_path = os.path.join(base_dir, 'nltk_data')
+
+# Tell NLTK to look there
+nltk.data.path.append(nltk_path)
 
 #for preprocessing
 from nltk.stem import WordNetLemmatizer
