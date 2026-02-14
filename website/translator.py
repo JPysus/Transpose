@@ -1,24 +1,24 @@
 #Author - John Michael De Borja (JPysus)
 #johnmichaeldb@gmail.com
-# import os
-# import nltk
+import os
+import nltk
 
-# # 1. Define a path inside your project environment
-# # This puts it in /mainproject/website/venv/nltk_data
-# project_nltk_path = os.path.join(os.getcwd(), 'website/venv', 'nltk_data')
+# 1. Define a path inside your project environment
+# This puts it in /mainproject/website/venv/nltk_data
+project_nltk_path = os.path.join(os.getcwd(), 'website/venv', 'nltk_data')
 
-# # 2. Create the folder if it doesn't exist
-# if not os.path.exists(project_nltk_path):
-#     os.makedirs(project_nltk_path)
+# 2. Create the folder if it doesn't exist
+if not os.path.exists(project_nltk_path):
+    os.makedirs(project_nltk_path)
 
-# # 3. Tell NLTK to use this path
-# nltk.data.path.append(project_nltk_path)
+# 3. Tell NLTK to use this path
+nltk.data.path.append(project_nltk_path)
 
-# # 4. Download to that specific folder
-# nltk.download('wordnet', download_dir=project_nltk_path)
-# nltk.download('punkt_tab', download_dir=project_nltk_path)
-# nltk.download('averaged_perceptron_tagger_eng', download_dir=project_nltk_path)
-# nltk.download('punkt', download_dir=project_nltk_path)
+# 4. Download to that specific folder
+nltk.download('wordnet', download_dir=project_nltk_path)
+nltk.download('punkt_tab', download_dir=project_nltk_path)
+nltk.download('averaged_perceptron_tagger_eng', download_dir=project_nltk_path)
+nltk.download('punkt', download_dir=project_nltk_path)
 
 #for preprocessing
 from nltk.stem import WordNetLemmatizer
