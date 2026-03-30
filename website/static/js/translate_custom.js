@@ -13,13 +13,13 @@ $(document).ready(function(){
 /* checks if user has entered the code already */
 $(document).ready(function(){
 
-  if(Cookies.get('passed')){
-    $("#codeInput").attr("data-bs-content", "You don't need to input the code again in this session!")
-    $("#codeInput").attr("data-bs-title", "Code already entered")
+  // if(Cookies.get('passed')){
+    $("#codeInput").attr("data-bs-content", "Having this modal w/ a password was a requirement during our thesis. I'm done w/ that, so I removed this. -jm")
+    $("#codeInput").attr("data-bs-title", "Code Disabled")
     $("#codeInput").attr("placeholder", "Go on, we're good!")
     $("#codeInput").prop("readonly", true)
     $("#codeInput").css('border', '2px solid green');
-  }
+  // }
 })
 /* modals */
 // instruction modal
