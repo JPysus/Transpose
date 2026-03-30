@@ -48,12 +48,11 @@ $("#dropdown_bottom a").on('click', function(){
 $("#instructions_close").on('click', function(){
   //if codeInput is invalid
   // if($("#codeInput").val() != "ITJMDBRL" && Cookies.get('passed') != "true"){
-  if(true){
-    animateCSS('#codeInput', 'headShake');
-    $("#codeInput").css('border', '2px solid red');
-  }
+  //   animateCSS('#codeInput', 'headShake');
+  //   $("#codeInput").css('border', '2px solid red');
+  // }
   
-  else{
+  // else{
     Cookies.set('passed', true);
     $("#codeInput").prop('readonly', true);
     $("#codeInput").css('border', '2px solid green');
@@ -64,7 +63,7 @@ $("#instructions_close").on('click', function(){
     animateCSS('#dropdown_bottom_btn', 'headShake').then(function(){
       $("#dropdown_bottom_btn").removeClass("border border-4 border-danger bigger animate__slow")
     })
-  }
+  // }
 });
 
 /* dropdown example picking */
