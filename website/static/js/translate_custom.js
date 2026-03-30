@@ -47,7 +47,8 @@ $("#dropdown_bottom a").on('click', function(){
 // #instructions on close animation
 $("#instructions_close").on('click', function(){
   //if codeInput is invalid
-  if($("#codeInput").val() != "ITJMDBRL" && Cookies.get('passed') != "true"){
+  // if($("#codeInput").val() != "ITJMDBRL" && Cookies.get('passed') != "true"){
+  if(true){
     animateCSS('#codeInput', 'headShake');
     $("#codeInput").css('border', '2px solid red');
   }
